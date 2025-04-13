@@ -45,7 +45,8 @@ type
 
     constructor Create(Ampel: TAmpel);
     destructor Destroy; override;
-    procedure NewEvent(Event: TMouseEvent);
+    procedure NewEvent(Event: TMouseEvent; UsePitch: boolean);
+    function AddMouseEvent(Event: TMouseEvent): boolean;
     procedure EventOff(const Event: TMouseEvent);
     procedure GetKeyEvent(Key: integer; var Event: TMouseEvent);
     procedure CheckMovePoint(const P: TPoint; Down: boolean);
@@ -103,16 +104,24 @@ type
 
 // Diskant: 5 Reihen à 20 Tasten
 
+const
+  KnopfCount = 20;
+
+
+type
+  TMidiZeile = array [0..KnopfCount-1] of byte;
+  TMidiDiskant = array [0..4] of TMidiZeile;
+
 var
   Ampel: TAmpel;
 
-function NoteToMidi(const Ton: string): byte;
-procedure MakeBlackArray;
-
-
 implementation
 
-{$R *.lfm}
+{$ifdef fpc}
+  {$R *.lfm}
+{$else}
+  {$R *.dfm}
+{$endif}
 
 uses
 {$ifdef MSWINDOWS}
@@ -121,36 +130,6 @@ uses
   UMidi, urtmidi,
 {$endif}
   UAkkordeon;
-
-const
-  KnopfCount = 20;
-
-type
-  TArr = array [0..KnopfCount-1] of boolean;
-  TBlackArray = array [0..4] of TArr;
-
-  TZeile = array [0..KnopfCount-1] of string;
-  TDiskant = array[0..4] of TZeile;
-
-  TMidiZeile = array [0..KnopfCount-1] of byte;
-  TMidiDiskant = array [0..4] of TMidiZeile;
-
-const
-  Diskant : TDiskant =
-     (('', 'cis', 'e', 'g', 'ais', 'cis+', 'e+', 'g+', 'ais+', 'cis++', 'e++', 'g++', 'ais++', 'cis+++', 'e+++', 'g+++', 'ais+++', 'cis++++', '', ''),
-      ('d', 'f', 'gis', 'h', 'a++', 'd+', 'f+', 'gis+', 'h+', 'd++', 'f++', 'gis++', 'h++', 'd+++', 'f+++', 'gis+++', 'h+++', '', '', ''),
-      ('', 'dis', 'fis', 'a', 'c+', 'dis+', 'fis+', 'a+', 'c++', 'dis++', 'fis++', 'a++', 'c+++', 'dis+++', 'fis+++', 'a+++', 'c++++', '', '', ''),
-      ('', 'cis', 'e', 'g', 'ais', 'cis+', 'e+', 'g+', 'ais+', 'cis++', 'e++', 'g++', 'ais++', 'cis+++', 'e+++', 'g+++', 'ais+++', 'cis++++', '', ''),
-      ('d', 'f', 'gis', 'h', 'a++', 'd+', 'f+', 'gis+', 'h+', 'd++', 'f++', 'gis++', 'h++', 'd+++', 'f+++', 'gis+++', 'h+++', '', '', '')
-     );
-var
-  BlackArr : TBlackArray;
-  MidiDiskant : TMidiDiskant;
-
-const
-  Leiter : array [0..11] of string = ('c', 'cis', 'd', 'dis', 'e', 'f', 'fis', 'g', 'gis', 'a', 'ais', 'h');
-  black: set of byte = [1, 3, 6, 8, 10];
-  grundTon = 36;
 
 procedure TAmpel.FormCreate(Sender: TObject);
 begin
@@ -298,7 +277,7 @@ begin
       if not AmpelEvents.IsOn(Row, Index) then
       begin
         Event.Pitch := MidiDiskant[Row, Index];
-        AmpelEvents.NewEvent(Event);
+        AmpelEvents.NewEvent(Event, false);
       end;
       break;
     end;
@@ -329,7 +308,7 @@ begin
   if Akkordeon.cbxAnzeigen.Checked then
   begin
     Canvas.Font.Color := $ffffff;
-    s := Leiter[MidiDiskant[Row, Index] mod 12];
+    s := Tonleiter[MidiDiskant[Row, Index] mod 12];
     l := Canvas.TextWidth(s);
     m := KnopfGroesse - 2*Canvas.Font.Size;
     Canvas.TextOut(rect.left + (KnopfGroesse-l) div 2, rect.Top + m div 2, s);
@@ -376,7 +355,7 @@ begin
       Event.Velocity := Data.Data2;
 
       if (Data.Status shr 4) = 9 then
-        AmpelEvents.NewEvent(Event)
+        AmpelEvents.NewEvent(Event, true)
       else
       if (Data.Status shr 4) = 8 then
         AmpelEvents.EventOff(Event);
@@ -423,44 +402,53 @@ begin
   writeln(Status, '  ', Data1, '  ', Data2, '  ', s); }
 end;
 
-procedure TAmpelEvents.NewEvent(Event: TMouseEvent);
+function TAmpelEvents.AddMouseEvent(Event: TMouseEvent): boolean;
 var
-  i, k: integer;
+  j: integer;
 begin
+  result := true;
+  CriticalAmpel.Acquire;
+  try
+    for j := 0 to UsedEvents-1 do
+      if (MouseEvents[j].Row_ = Event.Row_) and
+         (MouseEvents[j].Index_ = Event.Index_) then
+        result := false;
+    if result then
+    begin
+      MouseEvents[UsedEvents] := Event;
+      inc(fUsedEvents);
+      DoAmpel(UsedEvents-1, true);
+    end;
+  finally
+    CriticalAmpel.Release;
+ end;
+
+end;
+
+procedure TAmpelEvents.NewEvent(Event: TMouseEvent; UsePitch: boolean);
+var
+  i, j, k: integer;
+  ok: boolean;
+begin
+//  writeln('new event');
   if UsedEvents >= High(MouseEvents) then
     exit;
 
-  if Event.Row_ < 0 then
+  if UsePitch then
   begin
     for i := 0 to 4 do
       for k := 0 to 19 do
       begin
-        if Event.row_ >= 0 then
-          break;
         if MidiDiskant[i, k] = Event.Pitch then
         begin
           Event.row_ := i;
           Event.index_ := k;
-          //writeln('row ', i, '  index ', k);
-          break;
+//        writeln('down  ', Event.row_, '  ', Event.index_);
+          AddMouseEvent(Event);
         end;
-      end;
-  end;
-  CriticalAmpel.Acquire;
-  try
-    for i := 0 to UsedEvents-1 do
-      if (MouseEvents[i].Row_ = Event.Row_) and
-         (MouseEvents[i].Index_ = Event.Index_) then
-        if (MouseEvents[i].Pitch = 0) or
-           ((MouseEvents[i].Velocity > 0) and (Event.Velocity > 0)) then
-          exit;
-//      writeln('down  ', Event.row_, '  ', Event.index_);
-      MouseEvents[UsedEvents] := Event;
-      inc(fUsedEvents);
-      DoAmpel(UsedEvents-1, true);
-  finally
-    CriticalAmpel.Release;
-  end;
+    end;
+  end else
+    AddMouseEvent(Event);
 end;
 
 procedure TAmpelEvents.DoAmpel(Index: integer; On_: boolean);
@@ -478,33 +466,17 @@ end;
 procedure TAmpelEvents.EventOff(const Event: TMouseEvent);
 var
   i, j: integer;
-  r: integer;
 begin
   CriticalAmpel.Acquire;
   try
-    r := -1;
-    for i := 0 to UsedEvents-1 do
-      if (MouseEvents[i].Row_ = Event.Row_) and (MouseEvents[i].Index_ = Event.Index_) then
+    for i := UsedEvents-1 downto 0 do
+      if (MouseEvents[i].Pitch = Event.Pitch) then
       begin
-        r := i;
-        break;
+        DoAmpel(i, false);
+        for j := i to UsedEvents-2 do
+          MouseEvents[j] := MouseEvents[j+1];
+        dec(fUsedEvents);
       end;
-
-    if r = -1 then
-      for i := 0 to UsedEvents-1 do
-        if (MouseEvents[i].Pitch = Event.Pitch) and (Event.Pitch > 0) then
-        begin
-          r := i;
-          break;
-        end;
-
-    if r >= 0 then
-    begin
-      DoAmpel(i, false);
-      for j := r+1 to UsedEvents-1 do
-        MouseEvents[j-1] := MouseEvents[j];
-      dec(fUsedEvents);
-    end;
   finally
     CriticalAmpel.Release;
   end;
@@ -604,71 +576,6 @@ function TAmpelEvents.Paint(Row, Index: integer): boolean;
 begin
   result := IsOn(Row, Index);
   Ampel.PaintAmpel(Row, Index, result);
-end;
-
-
-function TonIndex(const Ton: string; var plus: integer): integer;
-var
-  s: string;
-begin
-  s := Ton;
-  plus := 0;
-  while (Length(s) > 0) and (s[Length(s)] = '+') do
-  begin
-    SetLength(s, Length(s)-1);
-    inc(plus);
-  end;
-
-  result := 11;
-  while (result >= 0) and (s <> Leiter[result]) do
-    dec(result);
-end;
-
-function NoteToMidi(const Ton: string): byte;
-var
-  res, plus: integer;
-begin
-  res := TonIndex(Ton, plus);
-  result := 0;
-  if res >= 0 then
-    result := grundTon + res + plus*12;
-end;
-
-procedure Transpose;
-var
-  t, i, k: integer;
-  s: string;
-  n: byte;
-begin
-  s := '0';
-  t := Akkordeon.cbxTranspose.ItemIndex;
-  if t >= 0 then
-    s := Akkordeon.cbxTranspose.Items[t];
-
-  t := StrToIntDef(s, 0);
-  for i := 0 to 4 do
-    for k := 0 to 19 do
-    begin
-      n := NoteToMidi(Diskant[i, k]);
-      if n > 0 then
-        MidiDiskant[i, k] := n + t;
-    end;
-end;
-
-procedure MakeBlackArray;
-var
-  i, k: integer;
-  b: boolean;
-  Note: byte;
-begin
-  Transpose;
-  for i := 0 to 4 do
-    for k := 0 to 19 do
-    begin
-      Note := MidiDiskant[i, k];
-      b := (Note mod 12) in black;
-      BlackArr[i, k] := b;
-    end;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////

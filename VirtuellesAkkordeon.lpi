@@ -68,6 +68,14 @@
         <Filename Value="UFormHelper.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="Ujson.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="UMyMemoryStream.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -79,15 +87,20 @@
       <IncludeFiles Value="$(ProjOutDir)"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <CodeGeneration>
+      <Checks>
+        <IOChecks Value="True"/>
+        <RangeChecks Value="True"/>
+        <OverflowChecks Value="True"/>
+        <StackChecks Value="True"/>
+      </Checks>
+      <VerifyObjMethodCallValidity Value="True"/>
+    </CodeGeneration>
     <Linking>
       <Debugging>
+        <GenerateDebugInfo Value="False"/>
         <DebugInfoType Value="dsDwarf3"/>
       </Debugging>
-      <Options>
-        <Win32>
-          <GraphicApplication Value="True"/>
-        </Win32>
-      </Options>
     </Linking>
   </CompilerOptions>
   <Debugging>

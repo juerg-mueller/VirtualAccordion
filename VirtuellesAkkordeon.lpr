@@ -15,7 +15,7 @@ uses
    RtMidi, UMidi, Urtmidi,
   {$endif}
   Interfaces, // this includes the LCL widgetset
-  Forms, UAmpel, UAkkordeon, UFormHelper;
+  Forms, UAmpel, UAkkordeon, UFormHelper, Ujson, UMyMemoryStream;
 
 {$R *.res}
 
