@@ -4,5 +4,5 @@ Virtuelles MIDI-Akkordeon. Es verwendet Lazarus als Programmiersprache. Es ist a
 
 Die Diskantbelegung kann mit einem "json"-File definiert werden. Im Verzeichnis "Instrumente" gibt es ein Beispiel. 
 
-![Akkordeon](https://github.com/user-attachments/assets/03124e5b-a32d-4f36-a6ad-d2ca3279b6ee)
+![Diskant](https://github.com/user-attachments/assets/6f901603-1042-4aea-be35-227baa5b802d)
 
