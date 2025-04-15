@@ -1,4 +1,4 @@
-unit UAmpel;
+﻿unit UAmpel;
 
 {$IFDEF FPC}
   {$MODE Delphi}
@@ -10,7 +10,7 @@ uses
   {$ifdef FPC}
   lcltype, LCLIntf, lcl,
   {$endif}
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, syncobjs, ExtCtrls,
+  Types, Classes, SysUtils, Forms, Controls, Graphics, Dialogs, syncobjs, ExtCtrls,
   StdCtrls;
 
 type
@@ -73,8 +73,6 @@ type
   { TAmpel }
 
   TAmpel = class(TForm)
-    cbxScrollBar: TCheckBox;
-    Label1: TLabel;
     procedure FormPaint(Sender: TObject);
     procedure FormMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -82,6 +80,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormCreate(Sender: TObject);
+    procedure FormResize(Sender: TObject);
 
     procedure Timer1Timer(Sender: TObject);
   private
@@ -137,7 +136,6 @@ begin
   AmpelEvents := TAmpelEvents.Create(self);
   KnopfGroesse := 52;
   cbxVertikal(nil);
-  cbxScrollBar.OnChange := cbxVertikal;
   Timer1 := TTimer.Create(self);
   Timer1.name := 'Timer1';
   Timer1.interval:= 1;
@@ -146,8 +144,6 @@ end;
 
 procedure TAmpel.cbxVertikal;
 begin
-  Label1.Visible := Akkordeon.cbxVertikal.Checked;
-  cbxScrollBar.Visible := Akkordeon.cbxVertikal.Checked;
   if Akkordeon.cbxVertikal.Checked then
   begin
     Height := 1200;
@@ -160,10 +156,6 @@ begin
     OffsetX := 60;
     OffsetY := 40;
   end;
-  if cbxScrollBar.Checked and Akkordeon.cbxVertikal.Checked then
-    VertScrollBar.Range := Height-5
-  else
-    VertScrollBar.Range := 0;
   invalidate;
 end;
 
@@ -175,7 +167,10 @@ var
 begin
   Abstand := round(KnopfGroesse*1.1);
   if Akkordeon.cbxVertikal.Checked then
-    Index := 19 - Index;
+    if row in [0,2,4] then
+      Index := 18 - Index
+    else
+      Index := 19 - Index;
   result := TRect.Create(0, 0, KnopfGroesse, KnopfGroesse);
   result.Offset(round(Index*Abstand), round(Row*Abstand*sqrt(3)/2));
   if Row in [1, 3] then
@@ -288,7 +283,8 @@ procedure TAmpel.PaintAmpel(Row: byte {0..4}; index: integer {0..19}; On_: boole
 var
   rect: TRect;
   s: string;
-  l, m: integer;
+  t: byte;
+  l, m, p: integer;
 begin
 //  writeln('print');
   rect := KnopfRect(Row, index);
@@ -308,7 +304,14 @@ begin
   if Akkordeon.cbxAnzeigen.Checked then
   begin
     Canvas.Font.Color := $ffffff;
-    s := Tonleiter[MidiDiskant[Row, Index] mod 12];
+    t := MidiDiskant[Row, Index];
+    s := Tonleiter[t mod 12];
+//    if KnopfGroesse >= 50 then
+    begin
+      p := (t-grundTon) div 12;
+      for l := 1 to p do
+        s := s + '''';
+    end;
     l := Canvas.TextWidth(s);
     m := KnopfGroesse - 2*Canvas.Font.Size;
     Canvas.TextOut(rect.left + (KnopfGroesse-l) div 2, rect.Top + m div 2, s);
@@ -361,6 +364,35 @@ begin
         AmpelEvents.EventOff(Event);
     end;
   end;
+end;
+
+procedure TAmpel.FormResize(Sender: TObject);
+begin
+{$ifdef FCP}
+  if Akkordeon.cbxVertikal.Checked then
+  begin
+    KnopfGroesse := round(Width/6.2);
+    OffsetX := KnopfGroesse;
+    OffsetY := round(KnopfGroesse * 0.75);
+  end else begin
+    KnopfGroesse := round(Height/6.2);
+    OffsetY := round(KnopfGroesse / 1.6);
+    OffsetX := round(KnopfGroesse * 0.75);
+  end;
+{$else}
+  if Akkordeon.cbxVertikal.Checked then
+  begin
+    KnopfGroesse := round(Width/6.9);
+    OffsetX := KnopfGroesse;
+    OffsetY := round(KnopfGroesse * 0.75);
+  end else begin
+    KnopfGroesse := round(Height/6.9);
+    OffsetY := round(KnopfGroesse / 1.6);
+    OffsetX := round(KnopfGroesse * 0.75);
+  end;
+{$endif}
+  Font.Size := round(KnopfGroesse / 3.6);
+  Invalidate;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////

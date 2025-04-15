@@ -1,37 +1,23 @@
 object Ampel: TAmpel
   Left = 508
-  Height = 368
   Top = 412
-  Width = 1198
+  HorzScrollBar.Smooth = True
   VertScrollBar.Smooth = True
-  Caption = 'Ampel'
-  ClientHeight = 368
+  Caption = 'Diskant'
+  ClientHeight = 192
   ClientWidth = 1198
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
   Font.Height = -19
   Font.Name = 'Sans'
+  Font.Style = []
+  Visible = True
   OnCreate = FormCreate
   OnMouseDown = FormMouseDown
   OnMouseMove = FormMouseMove
   OnMouseUp = FormMouseUp
   OnPaint = FormPaint
-  Visible = True
-  object cbxScrollBar: TCheckBox
-    Left = 88
-    Height = 21
-    Top = 6
-    Width = 21
-    Alignment = taLeftJustify
-    TabOrder = 0
-  end
-  object Label1: TLabel
-    Left = 17
-    Height = 18
-    Top = 8
-    Width = 55
-    Caption = 'Scroll Bar'
-    Font.Height = -13
-    Font.Name = 'Sans'
-    ParentColor = False
-    ParentFont = False
-  end
+  OnResize = FormResize
+  TextHeight = 22
 end

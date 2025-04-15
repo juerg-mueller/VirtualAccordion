@@ -1,21 +1,66 @@
 object Akkordeon: TAkkordeon
   Left = 519
-  Height = 321
   Top = 407
-  Width = 777
+  HorzScrollBar.Smooth = True
   Caption = 'Akkordeon'
-  ClientHeight = 321
+  ClientHeight = 392
   ClientWidth = 777
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  OnClick = FormClick
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
+  TextHeight = 15
+  object Label1: TLabel
+    Left = 32
+    Top = 17
+    Width = 74
+    Height = 15
+    Caption = 'Transponieren'
+    Color = clBtnFace
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 320
+    Top = 15
+    Width = 112
+    Height = 15
+    Caption = 'Notenwerte anzeigen'
+    Color = clBtnFace
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 320
+    Top = 46
+    Width = 107
+    Height = 15
+    Caption = 'vertikale Darstellung'
+    Color = clBtnFace
+    ParentColor = False
+  end
+  object Label4: TLabel
+    Left = 32
+    Top = 120
+    Width = 58
+    Height = 15
+    Caption = 'Instrument'
+    Color = clBtnFace
+    ParentColor = False
+  end
   object cbxTranspose: TComboBox
     Left = 184
-    Height = 31
     Top = 11
     Width = 68
-    ItemHeight = 0
+    Height = 23
     ItemIndex = 11
+    TabOrder = 0
+    Text = '0'
+    OnChange = cbxInstrumentsChange
     Items.Strings = (
       '-11'
       '-10'
@@ -39,135 +84,118 @@ object Akkordeon: TAkkordeon
       '8'
       '9'
       '10'
-      '11'
-    )
-    OnChange = FormChange
-    TabOrder = 0
-    Text = '0'
-  end
-  object Label1: TLabel
-    Left = 32
-    Height = 19
-    Top = 17
-    Width = 89
-    Caption = 'Transponieren'
-    ParentColor = False
+      '11')
   end
   object gbMidi: TGroupBox
     Left = 0
-    Height = 224
-    Top = 97
+    Top = 168
     Width = 777
+    Height = 224
     Align = alBottom
     Caption = 'MIDI I/O'
-    ClientHeight = 204
-    ClientWidth = 775
     TabOrder = 1
+    DesignSize = (
+      777
+      224)
     object lblKeyboard: TLabel
       Left = 24
-      Height = 19
       Top = 26
-      Width = 50
+      Width = 40
+      Height = 15
       Caption = 'MIDI IN'
+      Color = clBtnFace
       ParentColor = False
     end
     object Label17: TLabel
       Left = 24
-      Height = 19
       Top = 90
-      Width = 62
+      Width = 51
+      Height = 15
       Caption = 'MIDI OUT'
+      Color = clBtnFace
       ParentColor = False
     end
     object cbxMidiOut: TComboBox
       Left = 122
-      Height = 35
       Top = 84
       Width = 638
-      Anchors = [akTop, akLeft, akRight]
-      ItemHeight = 0
+      Height = 23
+      Style = csDropDownList
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 1
       OnChange = cbxMidiOutChange
       OnKeyDown = cbTransInstrumentKeyDown
       OnKeyPress = cbTransInstrumentKeyPress
       OnKeyUp = cbTransInstrumentKeyUp
-      Style = csDropDownList
-      TabOrder = 1
     end
     object cbxMidiInput: TComboBox
       Left = 122
-      Height = 35
       Top = 16
       Width = 638
-      Anchors = [akTop, akLeft, akRight]
-      ItemHeight = 0
+      Height = 23
+      Style = csDropDownList
+      Anchors = [akLeft, akTop, akRight]
+      TabOrder = 0
       OnChange = cbxMidiInputChange
       OnKeyDown = cbTransInstrumentKeyDown
       OnKeyPress = cbTransInstrumentKeyPress
       OnKeyUp = cbTransInstrumentKeyUp
-      Style = csDropDownList
-      TabOrder = 0
     end
     object btnReset: TButton
       Left = 122
-      Height = 25
       Top = 128
       Width = 638
-      Anchors = [akTop, akLeft, akRight]
-      Caption = 'MIDI OUT zurücksetzen'
+      Height = 25
+      Anchors = [akLeft, akTop, akRight]
+      Caption = 'MIDI OUT zur'#252'cksetzen'
+      TabOrder = 3
       OnClick = btnResetClick
       OnKeyDown = cbTransInstrumentKeyDown
       OnKeyPress = cbTransInstrumentKeyPress
       OnKeyUp = cbTransInstrumentKeyUp
-      TabOrder = 3
     end
     object btnResetMidi: TButton
       Left = 122
-      Height = 25
       Top = 160
       Width = 638
-      Anchors = [akTop, akLeft, akRight]
+      Height = 25
+      Anchors = [akLeft, akTop, akRight]
       Caption = 'MIDI Konfiguration neu laden'
+      TabOrder = 2
       OnClick = btnResetMidiClick
       OnKeyDown = cbTransInstrumentKeyDown
       OnKeyPress = cbTransInstrumentKeyPress
       OnKeyUp = cbTransInstrumentKeyUp
-      TabOrder = 2
     end
   end
   object cbxAnzeigen: TCheckBox
     Left = 464
-    Height = 21
     Top = 15
     Width = 21
+    Height = 21
     Checked = True
-    OnChange = cbxAnzeigenChange
     State = cbChecked
     TabOrder = 2
-  end
-  object Label2: TLabel
-    Left = 320
-    Height = 19
-    Top = 15
-    Width = 135
-    Caption = 'Notenwerte anzeigen'
-    ParentColor = False
+    OnClick = cbxAnzeigenClick
   end
   object cbxVertikal: TCheckBox
     Left = 464
-    Height = 21
-    Top = 44
+    Top = 42
     Width = 28
-    AutoSize = False
-    Checked = True
-    State = cbChecked
+    Height = 21
     TabOrder = 3
+    OnClick = cbxVertikalClick
   end
-  object Label3: TLabel
-    Left = 320
-    Height = 19
-    Top = 46
-    Width = 129
-    Caption = 'vertikale Darstellung'
-    ParentColor = False
+  object cbxInstruments: TComboBox
+    Left = 122
+    Top = 112
+    Width = 638
+    Height = 23
+    ItemIndex = 0
+    TabOrder = 4
+    Text = 'default'
+    OnChange = cbxInstrumentsChange
+    Items.Strings = (
+      'default')
   end
 end

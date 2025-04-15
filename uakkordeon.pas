@@ -43,9 +43,11 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure cbxAnzeigenChange(Sender: TObject);
-    procedure cbxVertikalChange(Sender: TObject);
     procedure cbxInstrumentsChange(Sender: TObject);
+    procedure FormClick(Sender: TObject);
+    procedure cbxAnzeigenClick(Sender: TObject);
+    procedure cbxVertikalClick(Sender: TObject);
+    procedure cbxTransposeChange(Sender: TObject);
   private
     procedure RegenerateMidi;
    procedure InitInstruments;
@@ -64,11 +66,11 @@ type
 
 const
   Diskant : TDiskant =
-     (('', 'cis', 'e', 'g', 'ais', 'cis+', 'e+', 'g+', 'ais+', 'cis++', 'e++', 'g++', 'ais++', 'cis+++', 'e+++', 'g+++', 'ais+++', 'cis++++', '', ''),
-      ('d', 'f', 'gis', 'h', 'a++', 'd+', 'f+', 'gis+', 'h+', 'd++', 'f++', 'gis++', 'h++', 'd+++', 'f+++', 'gis+++', 'h+++', '', '', ''),
+     (('cis', 'e', 'g', 'ais', 'cis+', 'e+', 'g+', 'ais+', 'cis++', 'e++', 'g++', 'ais++', 'cis+++', 'e+++', 'g+++', 'ais+++', 'cis++++', '', '', ''),
+      ('', 'd', 'f', 'gis', 'h', 'd+', 'f+', 'gis+', 'h+', 'd++', 'f++', 'gis++', 'h++', 'd+++', 'f+++', 'gis+++', 'h+++', '', '', ''),
       ('', 'dis', 'fis', 'a', 'c+', 'dis+', 'fis+', 'a+', 'c++', 'dis++', 'fis++', 'a++', 'c+++', 'dis+++', 'fis+++', 'a+++', 'c++++', '', '', ''),
       ('', 'cis', 'e', 'g', 'ais', 'cis+', 'e+', 'g+', 'ais+', 'cis++', 'e++', 'g++', 'ais++', 'cis+++', 'e+++', 'g+++', 'ais+++', 'cis++++', '', ''),
-      ('d', 'f', 'gis', 'h', 'a++', 'd+', 'f+', 'gis+', 'h+', 'd++', 'f++', 'gis++', 'h++', 'd+++', 'f+++', 'gis+++', 'h+++', '', '', '')
+      ('', 'd', 'f', 'gis', 'h', 'd+', 'f+', 'gis+', 'h+', 'd++', 'f++', 'gis++', 'h++', 'd+++', 'f+++', 'gis+++', 'h+++', '', '', '')
      );
 
   black: set of byte = [1, 3, 6, 8, 10];
@@ -98,10 +100,11 @@ implementation
 {$endif}
 
 uses
+  Ujson,
 {$ifdef mswindows}
   Midi;
 {$else}
-  UMidi, urtmidi, Ujson;
+  UMidi, urtmidi;
 {$endif}
 
 
@@ -114,11 +117,14 @@ begin
     Combo.AddItem(arr[i], nil);
 end;
 
+procedure TAkkordeon.FormClick(Sender: TObject);
+begin
+  Ampel.Show();
+end;
+
 procedure TAkkordeon.FormCreate(Sender: TObject);
 begin
   InitInstruments;
-//  cbxInstrumentsChange(Sender);
-  cbxVertikal.OnChange := cbxVertikalChange;
   cbxInstruments.OnChange := cbxInstrumentsChange;
 end;
 
@@ -147,6 +153,11 @@ begin
 
     OpenMidiMicrosoft;
   end;
+end;
+
+procedure TAkkordeon.cbxTransposeChange(Sender: TObject);
+begin
+    //
 end;
 
 procedure TAkkordeon.cbxMidiInputChange(Sender: TObject);
@@ -235,12 +246,12 @@ begin
   end;
 end;
 
-procedure TAkkordeon.cbxAnzeigenChange(Sender: TObject);
+procedure TAkkordeon.cbxAnzeigenClick(Sender: TObject);
 begin
   Ampel.Invalidate;
 end;
 
-procedure TAkkordeon.cbxVertikalChange(Sender: TObject);
+procedure TAkkordeon.cbxVertikalClick(Sender: TObject);
 begin
   Ampel.cbxVertikal(sender);
 end;
