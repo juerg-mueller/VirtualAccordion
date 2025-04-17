@@ -1,6 +1,6 @@
 object Akkordeon: TAkkordeon
-  Left = 519
-  Top = 407
+  Left = 1237
+  Top = 472
   HorzScrollBar.Smooth = True
   Caption = 'Akkordeon'
   ClientHeight = 392
@@ -18,7 +18,7 @@ object Akkordeon: TAkkordeon
   TextHeight = 15
   object Label1: TLabel
     Left = 32
-    Top = 17
+    Top = 14
     Width = 74
     Height = 15
     Caption = 'Transponieren'
@@ -26,35 +26,35 @@ object Akkordeon: TAkkordeon
     ParentColor = False
   end
   object Label2: TLabel
-    Left = 320
-    Top = 15
-    Width = 112
+    Left = 32
+    Top = 54
+    Width = 62
     Height = 15
-    Caption = 'Notenwerte anzeigen'
-    Color = clBtnFace
-    ParentColor = False
-  end
-  object Label3: TLabel
-    Left = 320
-    Top = 46
-    Width = 107
-    Height = 15
-    Caption = 'vertikale Darstellung'
+    Caption = 'Notenwerte'
     Color = clBtnFace
     ParentColor = False
   end
   object Label4: TLabel
     Left = 32
-    Top = 120
+    Top = 129
     Width = 58
     Height = 15
     Caption = 'Instrument'
     Color = clBtnFace
     ParentColor = False
   end
+  object Label5: TLabel
+    Left = 32
+    Top = 92
+    Width = 40
+    Height = 15
+    Caption = 'Ansicht'
+    Color = clBtnFace
+    ParentColor = False
+  end
   object cbxTranspose: TComboBox
-    Left = 184
-    Top = 11
+    Left = 136
+    Top = 9
     Width = 68
     Height = 23
     ItemIndex = 11
@@ -119,7 +119,7 @@ object Akkordeon: TAkkordeon
       Left = 122
       Top = 84
       Width = 638
-      Height = 23
+      Height = 35
       Style = csDropDownList
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 1
@@ -132,7 +132,7 @@ object Akkordeon: TAkkordeon
       Left = 122
       Top = 16
       Width = 638
-      Height = 23
+      Height = 35
       Style = csDropDownList
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -147,7 +147,7 @@ object Akkordeon: TAkkordeon
       Width = 638
       Height = 25
       Anchors = [akLeft, akTop, akRight]
-      Caption = 'MIDI OUT zur'#252'cksetzen'
+      Caption = 'MIDI OUT zur'#195#188'cksetzen'
       TabOrder = 3
       OnClick = btnResetClick
       OnKeyDown = cbTransInstrumentKeyDown
@@ -168,34 +168,41 @@ object Akkordeon: TAkkordeon
       OnKeyUp = cbTransInstrumentKeyUp
     end
   end
-  object cbxAnzeigen: TCheckBox
-    Left = 464
-    Top = 15
-    Width = 21
-    Height = 21
-    Checked = True
-    State = cbChecked
-    TabOrder = 2
-    OnClick = cbxAnzeigenClick
-  end
-  object cbxVertikal: TCheckBox
-    Left = 464
-    Top = 42
-    Width = 28
-    Height = 21
-    TabOrder = 3
-    OnClick = cbxVertikalClick
-  end
   object cbxInstruments: TComboBox
     Left = 122
-    Top = 112
+    Top = 121
     Width = 638
+    Height = 31
+    TabOrder = 2
+    Text = 'C-Griff Europe'
+  end
+  object cbxAnsicht: TComboBox
+    Left = 122
+    Top = 84
+    Width = 636
     Height = 23
     ItemIndex = 0
-    TabOrder = 4
-    Text = 'default'
-    OnChange = cbxInstrumentsChange
+    TabOrder = 3
+    Text = 'Horizontal'
+    OnChange = cbxAnsichtChange
     Items.Strings = (
-      'default')
+      'Horizontal'
+      'Vertikal Spielersicht'
+      'Vertikal Zuschauersicht')
+  end
+  object cbxNotenansicht: TComboBox
+    Left = 122
+    Top = 47
+    Width = 636
+    Height = 23
+    ItemIndex = 1
+    TabOrder = 4
+    Text = 'mit Nummer'
+    OnChange = cbxAnsichtChange
+    Items.Strings = (
+      ''
+      'mit Nummer'
+      'ohne Nummer'
+      'mit Apostoph')
   end
 end

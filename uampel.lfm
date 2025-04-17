@@ -5,7 +5,7 @@ object Ampel: TAmpel
   Width = 1198
   HorzScrollBar.Smooth = True
   VertScrollBar.Smooth = True
-  Caption = 'Ampel'
+  Caption = 'Diskant'
   Font.Height = -19
   Font.Name = 'Sans'
   OnCreate = FormCreate

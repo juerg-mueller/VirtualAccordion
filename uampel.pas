@@ -97,14 +97,14 @@ type
     function KnopfRect(Row: byte {0..4}; index: byte {0..19}): TRect;
     procedure PaintAmpel(Row: byte {0..4}; index: integer {0..19}; On_: boolean);
     procedure OnMidiInData(aDeviceIndex: LongInt; aStatus, aData1, aData2: byte; aTimestamp: Int64);
-    procedure cbxVertikal(Sender: TObject);
+    procedure cbxAnsichtChange(Sender: TObject);
 
   end;
 
-// Diskant: 5 Reihen à 20 Tasten
+// Diskant: 5 Reihen à 19 Tasten
 
 const
-  KnopfCount = 20;
+  KnopfCount = 19;
 
 
 type
@@ -132,27 +132,28 @@ uses
 
 procedure TAmpel.FormCreate(Sender: TObject);
 begin
+  Color := $7f7f7f;
   MidiInBuffer := TMidiInBuffer.Create;
   AmpelEvents := TAmpelEvents.Create(self);
   KnopfGroesse := 52;
-  cbxVertikal(nil);
+  cbxAnsichtChange(nil);
   Timer1 := TTimer.Create(self);
   Timer1.name := 'Timer1';
   Timer1.interval:= 1;
   Timer1.OnTimer := Timer1Timer;
 end;
 
-procedure TAmpel.cbxVertikal;
+procedure TAmpel.cbxAnsichtChange;
 begin
-  if Akkordeon.cbxVertikal.Checked then
+  if Akkordeon.cbxAnsicht.ItemIndex > 0 then
   begin
-    Height := 1200;
+    Height := 1250;
     Width := 360;
     OffsetX := 20;
     OffsetY := 50;
   end else begin
     Height := 360;
-    Width := 1200;
+    Width := 1250;
     OffsetX := 60;
     OffsetY := 40;
   end;
@@ -166,17 +167,23 @@ var
   Abstand: integer;
 begin
   Abstand := round(KnopfGroesse*1.1);
-  if Akkordeon.cbxVertikal.Checked then
+  if Akkordeon.cbxAnsicht.ItemIndex = 1 then
+  begin
     if row in [0,2,4] then
       Index := 18 - Index
     else
       Index := 19 - Index;
+  end else
+  if Akkordeon.cbxAnsicht.ItemIndex = 2 then
+  begin
+    row := 4 - row;
+  end;
   result := TRect.Create(0, 0, KnopfGroesse, KnopfGroesse);
   result.Offset(round(Index*Abstand), round(Row*Abstand*sqrt(3)/2));
   if Row in [1, 3] then
     result.Offset(-Abstand div 2, 0);
   result.Offset(OffsetX, OffsetY);
-  if Akkordeon.cbxVertikal.Checked then
+  if Akkordeon.cbxAnsicht.ItemIndex > 0 then
   begin
     rect.Left := result.Top;
     rect.Right := result.Bottom;
@@ -190,20 +197,17 @@ procedure TAmpel.FormPaint(Sender: TObject);
 var
   k, i, l: integer;
 begin
-  canvas.Pen.Color := $ffffff;
   for i := 0 to 4 do
   begin
-    l := 18;
+    l := KnopfCount-2;
     if i in [1, 3] then
       inc(l);
     for k := 0 to l do
     begin
-      if BlackArr[i, k] then
-        canvas.Brush.Color := $00
-      else
-        canvas.Brush.Color := $007f7f;
-        if MidiDiskant[i, k] > 0 then
-          PaintAmpel(i, k, AmpelEvents.IsOn(i, k));
+      if MidiDiskant[i, k] > 0 then
+      begin
+        PaintAmpel(i, k, AmpelEvents.IsOn(i, k));
+      end;
     end;
 
   end;
@@ -256,9 +260,9 @@ begin
 
   for Row := 0 to 4 do
   begin
-    l := 18;
+    l := KnopfCount-2;
     if Row in [1, 3] then
-      l := 19;
+      inc(l);
     for Index := 0 to l do
       if (MidiDiskant[Row, Index] > 0) and
          KnopfRect(Row, Index).Contains(Event.P) then
@@ -293,21 +297,29 @@ begin
     if BlackArr[row, index] then
       canvas.Brush.Color := $0000
     else
-      canvas.Brush.Color := $007f7f;
+      canvas.Brush.Color := $efefef;
   end else
   if BlackArr[row, index] then
     canvas.Brush.Color := $ffff00
   else
     canvas.Brush.Color := $00ff00;
 
+  canvas.Pen.Color := canvas.Brush.Color;
   canvas.Ellipse(rect);
-  if Akkordeon.cbxAnzeigen.Checked then
+  if Akkordeon.cbxNotenansicht.ItemIndex > 0 then
   begin
-    Canvas.Font.Color := $ffffff;
+    if canvas.Brush.Color = $efefef then
+      Canvas.Font.Color := 0
+    else
+      Canvas.Font.Color := $ffffff;
     t := MidiDiskant[Row, Index];
-    s := Tonleiter[t mod 12];
-//    if KnopfGroesse >= 50 then
+    if Akkordeon.cbxNotenansicht.ItemIndex in [1, 2] then
     begin
+      s := Tonleiter2[t mod 12];
+      if Akkordeon.cbxNotenansicht.ItemIndex = 1 then
+        s := s + IntToStr(t div 12);
+    end else begin
+      s := Tonleiter[t mod 12];
       p := (t-grundTon) div 12;
       for l := 1 to p do
         s := s + '''';
@@ -368,8 +380,8 @@ end;
 
 procedure TAmpel.FormResize(Sender: TObject);
 begin
-{$ifdef FCP}
-  if Akkordeon.cbxVertikal.Checked then
+{$ifdef FPC}
+  if Akkordeon.cbxAnsicht.ItemIndex > 0 then
   begin
     KnopfGroesse := round(Width/6.2);
     OffsetX := KnopfGroesse;
@@ -380,7 +392,7 @@ begin
     OffsetX := round(KnopfGroesse * 0.75);
   end;
 {$else}
-  if Akkordeon.cbxVertikal.Checked then
+  if Akkordeon.cbxAnsicht.ItemIndex > 0 then
   begin
     KnopfGroesse := round(Width/6.9);
     OffsetX := KnopfGroesse;

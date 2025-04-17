@@ -14,8 +14,10 @@ type
   { TAkkordeon }
 
   TAkkordeon = class(TForm)
+    cbxNotenansicht: TComboBox;
     cbxTranspose: TComboBox;
     cbxInstruments: TComboBox;
+    cbxAnsicht: TComboBox;
     Label1: TLabel;
     gbMidi: TGroupBox;
     Label4: TLabel;
@@ -25,10 +27,8 @@ type
     cbxMidiInput: TComboBox;
     btnReset: TButton;
     btnResetMidi: TButton;
-    cbxAnzeigen: TCheckBox;
-    cbxVertikal: TCheckBox;
     Label2: TLabel;
-    Label3: TLabel;
+    Label5: TLabel;
     procedure cbxMidiOutChange(Sender: TObject);
     procedure cbxMidiInputChange(Sender: TObject);
     procedure cbTransInstrumentKeyPress(Sender: TObject; var Key: Char);
@@ -41,13 +41,13 @@ type
 
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure FormChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cbxInstrumentsChange(Sender: TObject);
     procedure FormClick(Sender: TObject);
     procedure cbxAnzeigenClick(Sender: TObject);
-    procedure cbxVertikalClick(Sender: TObject);
+    procedure cbxAnsichtChange(Sender: TObject);
     procedure cbxTransposeChange(Sender: TObject);
+    procedure cbxNotenansichtChange(Sender: TObject);
   private
     procedure RegenerateMidi;
    procedure InitInstruments;
@@ -65,18 +65,12 @@ type
   TDiskant = array[0..4] of TZeile;
 
 const
-  Diskant : TDiskant =
-     (('cis', 'e', 'g', 'ais', 'cis+', 'e+', 'g+', 'ais+', 'cis++', 'e++', 'g++', 'ais++', 'cis+++', 'e+++', 'g+++', 'ais+++', 'cis++++', '', '', ''),
-      ('', 'd', 'f', 'gis', 'h', 'd+', 'f+', 'gis+', 'h+', 'd++', 'f++', 'gis++', 'h++', 'd+++', 'f+++', 'gis+++', 'h+++', '', '', ''),
-      ('', 'dis', 'fis', 'a', 'c+', 'dis+', 'fis+', 'a+', 'c++', 'dis++', 'fis++', 'a++', 'c+++', 'dis+++', 'fis+++', 'a+++', 'c++++', '', '', ''),
-      ('', 'cis', 'e', 'g', 'ais', 'cis+', 'e+', 'g+', 'ais+', 'cis++', 'e++', 'g++', 'ais++', 'cis+++', 'e+++', 'g+++', 'ais+++', 'cis++++', '', ''),
-      ('', 'd', 'f', 'gis', 'h', 'd+', 'f+', 'gis+', 'h+', 'd++', 'f++', 'gis++', 'h++', 'd+++', 'f+++', 'gis+++', 'h+++', '', '', '')
-     );
-
   black: set of byte = [1, 3, 6, 8, 10];
   grundTon = 36;
 
-  Tonleiter : array [0..11] of string = ('c', 'cis', 'd', 'dis', 'e', 'f', 'fis', 'g', 'gis', 'a', 'ais', 'h');
+  Tonleiter : array [0..11] of string = ('C', 'Dis', 'D', 'Dis', 'E', 'F', 'Fis', 'G', 'Gis', 'A', 'Ais', 'H');
+  Tonleiter_: array [0..11] of string = ('c', 'cis', 'd', 'dis', 'e', 'f', 'fis', 'g', 'gis', 'a', 'ais', 'h');
+  Tonleiter2: array [0..11] of string = ('C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B');
 
 var
   Akkordeon: TAkkordeon;
@@ -100,14 +94,70 @@ implementation
 {$endif}
 
 uses
-  Ujson,
+  Ujson, UMyMemoryStream,
 {$ifdef mswindows}
   Midi;
 {$else}
   UMidi, urtmidi;
 {$endif}
 
+type
+  PDiskant = ^TDiskant;
+  TDiskantArr = array [0..5] of PDiskant;
 
+const
+  B_Griff_Bajan: TDiskant = (
+    ('E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++', ''),
+    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++'),
+    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
+    ('Dis', 'E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++'),
+    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', '')
+   );
+
+  C_Griff_Europe: TDiskant = (
+    ('Dis', 'E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', ''),
+    ('C', 'Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++'),
+    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', ''),
+    ('Dis', 'E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++'),
+    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', '')
+   );
+
+  D_Griff_1: TDiskant = (
+    ('C', 'Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', ''),
+    ('H', 'D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++'),
+    ('Cis', 'E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', ''),
+    ('C', 'Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++'),
+    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', '')
+   );
+
+  D_Griff_2: TDiskant = (
+    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
+    ('Cis', 'E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', 'G++++'),
+    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++',''),
+    ('C', 'Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++'),
+    ('Cis', 'E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', '')
+   );
+
+  C_Griff_2: TDiskant = (
+    ('F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++', 'A++++'),
+    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
+    ('E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++', ''),
+    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++'),
+    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', '')
+   );
+
+  B_Griff_Finnish: TDiskant = (
+    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', ''),
+    ('Dis', 'E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++'),
+    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
+    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++'),
+    ('E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++', '')
+   );
+
+  Arr: TDiskantArr = (@C_Griff_Europe, @C_Griff_2, @B_Griff_Bajan, @B_Griff_Finnish, @D_Griff_1, @D_Griff_2);
+
+  str: array[0..5] of string =
+      ('C-Griff Europe', 'C-Griff 2', 'B-Griff Bajan', 'B-Griff Finnish', 'D-Griff 1', 'D-Griff 2');
 
 procedure InsertList(Combo: TComboBox; arr: array of string);
 var
@@ -133,13 +183,6 @@ begin
   MidiInput.CloseAll;
 end;
 
-procedure TAkkordeon.FormChange(Sender: TObject);
-begin
-  MakeBlackArray;
-  Ampel.invalidate;
-  Ampel.Show;
-end;
-
 procedure TAkkordeon.cbxMidiOutChange(Sender: TObject);
 begin
   if cbxMidiOut.ItemIndex >= 0 then
@@ -157,7 +200,12 @@ end;
 
 procedure TAkkordeon.cbxTransposeChange(Sender: TObject);
 begin
-    //
+  cbxInstrumentsChange(Sender);
+end;
+
+procedure TAkkordeon.cbxNotenansichtChange(Sender: TObject);
+begin
+  Ampel.Invalidate;
 end;
 
 procedure TAkkordeon.cbxMidiInputChange(Sender: TObject);
@@ -221,7 +269,7 @@ procedure TAkkordeon.FormShow(Sender: TObject);
 begin
   RegenerateMidi;
   MidiInput.OnMidiData := Ampel.OnMidiInData;
-
+  Ampel.Caption := cbxInstruments.Text;
 end;
 
 procedure TAkkordeon.RegenerateMidi;
@@ -251,9 +299,9 @@ begin
   Ampel.Invalidate;
 end;
 
-procedure TAkkordeon.cbxVertikalClick(Sender: TObject);
+procedure TAkkordeon.cbxAnsichtChange(Sender: TObject);
 begin
-  Ampel.cbxVertikal(sender);
+  Ampel.cbxAnsichtChange(sender);
 end;
 
 function TonIndex(const Ton: string; var plus: integer): integer;
@@ -269,7 +317,7 @@ begin
   end;
 
   result := 11;
-  while (result >= 0) and (s <> Tonleiter[result]) do
+  while (result >= 0) and (s <> Tonleiter_[result]) do
     dec(result);
 end;
 
@@ -281,6 +329,18 @@ begin
   result := 0;
   if res >= 0 then
     result := grundTon + res + plus*12;
+end;
+
+procedure TrasposeMidiDiskant(t: integer);
+var
+  i, k: integer;
+begin
+  for i := 0 to 4 do
+    for k := 0 to KnopfCount-1 do
+    begin
+      if MidiDiskant[i, k] > 0 then
+        inc(MidiDiskant[i, k], t);
+    end;
 end;
 
 procedure Transpose;
@@ -295,12 +355,7 @@ begin
     s := Akkordeon.cbxTranspose.Items[t];
 
   t := StrToIntDef(s, 0);
-  for i := 0 to 4 do
-    for k := 0 to KnopfCount-1 do
-    begin
-      if MidiDiskant[i, k] > 0 then
-        inc(MidiDiskant[i, k], t);
-    end;
+  TrasposeMidiDiskant(t);
 end;
 
 procedure MakeBlackArray;
@@ -327,6 +382,7 @@ begin
     MidiDiskant := MidiInstruments[cbxInstruments.ItemIndex];
     Transpose;
     MakeBlackArray;
+    Ampel.Caption := cbxInstruments.Text;
     Ampel.Invalidate;
   end;
 end;
@@ -335,19 +391,63 @@ procedure TAkkordeon.InitInstruments;
 const
   Path = 'Instrumente/';
 var
-  i, k, j: integer;
+  i, k, j,l ,p: integer;
   root, Node, NodeList: Tjson;
-  b: byte;
+  b, t: byte;
   name, s: AnsiString;
+  Stream: TMyMemoryStream;
 
   SR      : TSearchRec;
   DirList : array of string;
+  Diskant: TDiskant;
 begin
-  for i := 0 to 4 do
-    for k := 0 to KnopfCount-1 do
-      MidiDiskant[i, k] := NoteToMidi(Diskant[i, k]);
-  SetLength(MidiInstruments, 1);
-  MidiInstruments[0] := MidiDiskant;
+  for j := 0 to Length(arr)-1 do
+  begin
+    Diskant := arr[j]^;
+    for i := 0 to 4 do
+      for k := 0 to KnopfCount-1 do
+        MidiDiskant[i, k] := NoteToMidi(LowerCase(Diskant[i, k]));
+    SetLength(MidiInstruments, length(MidiInstruments)+1);
+    MidiInstruments[length(MidiInstruments)-1] := MidiDiskant;
+    cbxInstruments.Items.Add(str[j]);
+  end;
+{
+  Stream := TMyMemoryStream.Create;
+  Stream.WriteString('const');
+  Stream.writeln;
+  for j := 0 to Length(MidiInstruments)-1 do
+  begin
+    Stream.WriteString('  ' + cbxInstruments.Items[j] + ': TDiskant = (');
+    Stream.writeln;
+    for i := 0 to 4 do
+    begin
+      stream.WriteString('    (');
+      for k := 0 to KnopfCount-1 do begin
+        t := MidiInstruments[j, i, k];
+        s := '';
+        if t > 0 then begin
+          s := Tonleiter[t mod 12];
+          p := (t-grundTon) div 12;
+          for l := 1 to p do
+            s := s + '+';
+        end;
+        stream.WriteString('''' + s + '''');
+        if k < KnopfCount-1 then
+          stream.WriteString(', ');
+      end;
+      stream.WriteString(')');
+      if i < 4 then
+        stream.WriteString(',');
+      stream.writeln;
+    end;
+    stream.WriteString('   );');
+    stream.writeln;
+    stream.writeln;
+  end;
+  stream.SaveToFile('Diskant.pas');
+  stream.free;
+  }
+
 
   SetLength(DirList, 0);
   if FindFirst(Path + '*.json', faNormal, SR) = 0 then
@@ -389,6 +489,7 @@ begin
     end;
   SetLength(DirList, 0);
 
+  cbxInstruments.ItemIndex := 0;
   MidiDiskant := MidiInstruments[0];
   Transpose;
   MakeBlackArray;
