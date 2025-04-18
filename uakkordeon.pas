@@ -106,19 +106,19 @@ type
   TDiskantArr = array [0..5] of PDiskant;
 
 const
-  B_Griff_Bajan: TDiskant = (
-    ('E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++', ''),
-    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++'),
-    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
-    ('Dis', 'E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++'),
-    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', '')
-   );
-
   C_Griff_Europe: TDiskant = (
-    ('Dis', 'E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', ''),
+    ('Cis', 'E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', ''),
     ('C', 'Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++'),
     ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', ''),
-    ('Dis', 'E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++'),
+    ('Cis', 'E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', 'G++++'),
+    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', '')
+   );
+
+  C_Griff_2: TDiskant = (
+    ('F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++', 'A++++'),
+    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
+    ('E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++', ''),
+    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++'),
     ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', '')
    );
 
@@ -138,12 +138,12 @@ const
     ('Cis', 'E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', '')
    );
 
-  C_Griff_2: TDiskant = (
-    ('F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++', 'A++++'),
-    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
+  B_Griff_Bajan: TDiskant = (
     ('E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++', ''),
     ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++'),
-    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', '')
+    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
+    ('Dis', 'E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++'),
+    ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', '')
    );
 
   B_Griff_Finnish: TDiskant = (
@@ -156,8 +156,7 @@ const
 
   Arr: TDiskantArr = (@C_Griff_Europe, @C_Griff_2, @B_Griff_Bajan, @B_Griff_Finnish, @D_Griff_1, @D_Griff_2);
 
-  str: array[0..5] of string =
-      ('C-Griff Europe', 'C-Griff 2', 'B-Griff Bajan', 'B-Griff Finnish', 'D-Griff 1', 'D-Griff 2');
+  str: array [0..5] of string = ('C-Griff Europe', 'C-Griff 2', 'B-Griff Bajan', 'B-Griff Finnish', 'D-Griff 1', 'D-Griff 2');
 
 procedure InsertList(Combo: TComboBox; arr: array of string);
 var

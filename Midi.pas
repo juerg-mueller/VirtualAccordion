@@ -409,15 +409,14 @@ begin
       if not IsCreativeSoundBlaster(lOutCaps.szPname) and
          (midiOutOpen(@lHandle, i, 0, 0, CALLBACK_NULL) = 0) then
       begin
-        s := lOutCaps.szPname;                       
+        l := length(DeviceNames);
+        SetLength(DeviceNames, l+1);
+        SetLength(Handles, l+1);
+        DeviceNames[l] := lOutCaps.szPname;
+        s := lOutCaps.szPname;
         if (s = MicrosoftSync){ or
            (Pos(UM_ONE, s) > 0)} then
         begin
-          l := length(DeviceNames);
-          SetLength(DeviceNames, l+1);
-          SetLength(Handles, l+1);
-          DeviceNames[l] := lOutCaps.szPname;
-
           MicrosoftIndex := l;
           TrueMicrosoftIndex := MicrosoftIndex;
 {$if defined(CONSOLE)}
