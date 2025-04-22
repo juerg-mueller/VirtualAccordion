@@ -3,7 +3,7 @@ object Akkordeon: TAkkordeon
   Top = 472
   HorzScrollBar.Smooth = True
   Caption = 'Akkordeon'
-  ClientHeight = 392
+  ClientHeight = 412
   ClientWidth = 777
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -28,9 +28,9 @@ object Akkordeon: TAkkordeon
   object Label2: TLabel
     Left = 32
     Top = 54
-    Width = 62
+    Width = 56
     Height = 15
-    Caption = 'Notenwerte'
+    Caption = 'Notenwert'
     Color = clBtnFace
     ParentColor = False
   end
@@ -49,6 +49,15 @@ object Akkordeon: TAkkordeon
     Width = 40
     Height = 15
     Caption = 'Ansicht'
+    Color = clBtnFace
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 32
+    Top = 161
+    Width = 62
+    Height = 15
+    Caption = 'Sichtbarkeit'
     Color = clBtnFace
     ParentColor = False
   end
@@ -88,7 +97,7 @@ object Akkordeon: TAkkordeon
   end
   object gbMidi: TGroupBox
     Left = 0
-    Top = 168
+    Top = 188
     Width = 777
     Height = 224
     Align = alBottom
@@ -119,7 +128,7 @@ object Akkordeon: TAkkordeon
       Left = 122
       Top = 84
       Width = 638
-      Height = 35
+      Height = 23
       Style = csDropDownList
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 1
@@ -132,7 +141,7 @@ object Akkordeon: TAkkordeon
       Left = 122
       Top = 16
       Width = 638
-      Height = 35
+      Height = 23
       Style = csDropDownList
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -143,11 +152,11 @@ object Akkordeon: TAkkordeon
     end
     object btnReset: TButton
       Left = 122
-      Top = 128
+      Top = 129
       Width = 638
       Height = 25
       Anchors = [akLeft, akTop, akRight]
-      Caption = 'MIDI OUT zur'#195#188'cksetzen'
+      Caption = 'MIDI OUT zur'#252'cksetzen'
       TabOrder = 3
       OnClick = btnResetClick
       OnKeyDown = cbTransInstrumentKeyDown
@@ -172,7 +181,7 @@ object Akkordeon: TAkkordeon
     Left = 122
     Top = 121
     Width = 638
-    Height = 31
+    Height = 23
     TabOrder = 2
     Text = 'C-Griff Europe'
   end
@@ -204,5 +213,19 @@ object Akkordeon: TAkkordeon
       'mit Nummer'
       'ohne Nummer'
       'mit Apostoph')
+  end
+  object cbxUnterdrueckung: TComboBox
+    Left = 120
+    Top = 158
+    Width = 638
+    Height = 23
+    ItemIndex = 0
+    TabOrder = 5
+    Text = 'Alle Kn'#246'pfe animieren'
+    OnChange = cbxUnterdrueckungChange
+    Items.Strings = (
+      'Alle Kn'#246'pfe animieren'
+      'Untere drei Reihen'
+      'Obere drei Reihen')
   end
 end

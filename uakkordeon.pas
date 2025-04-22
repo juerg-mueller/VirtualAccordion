@@ -29,6 +29,8 @@ type
     btnResetMidi: TButton;
     Label2: TLabel;
     Label5: TLabel;
+    Label3: TLabel;
+    cbxUnterdrueckung: TComboBox;
     procedure cbxMidiOutChange(Sender: TObject);
     procedure cbxMidiInputChange(Sender: TObject);
     procedure cbTransInstrumentKeyPress(Sender: TObject; var Key: Char);
@@ -48,6 +50,7 @@ type
     procedure cbxAnsichtChange(Sender: TObject);
     procedure cbxTransposeChange(Sender: TObject);
     procedure cbxNotenansichtChange(Sender: TObject);
+    procedure cbxUnterdrueckungChange(Sender: TObject);
   private
     procedure RegenerateMidi;
    procedure InitInstruments;
@@ -117,7 +120,7 @@ const
   C_Griff_2: TDiskant = (
     ('F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++', 'A++++'),
     ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
-    ('E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++', ''),
+    ('E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', 'G++++', ''),
     ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++'),
     ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', '')
    );
@@ -139,19 +142,19 @@ const
    );
 
   B_Griff_Bajan: TDiskant = (
-    ('E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++', ''),
+    ('E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', 'G++++', ''),
     ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++'),
     ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
-    ('Dis', 'E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++'),
+    ('Cis', 'E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', 'G++++'),
     ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', '')
    );
 
   B_Griff_Finnish: TDiskant = (
     ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', ''),
-    ('Dis', 'E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++'),
+    ('Cis', 'E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++'),
     ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
     ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++'),
-    ('E', 'G', 'Ais', 'Dis+', 'E+', 'G+', 'Ais+', 'Dis++', 'E++', 'G++', 'Ais++', 'Dis+++', 'E+++', 'G+++', 'Ais+++', 'Dis++++', 'E++++', 'G++++', '')
+    ('E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', 'G++++', '')
    );
 
   Arr: TDiskantArr = (@C_Griff_Europe, @C_Griff_2, @B_Griff_Bajan, @B_Griff_Finnish, @D_Griff_1, @D_Griff_2);
@@ -168,7 +171,8 @@ end;
 
 procedure TAkkordeon.FormClick(Sender: TObject);
 begin
-  Ampel.Show();
+  if not Ampel.Visible then
+    Ampel.Show();
 end;
 
 procedure TAkkordeon.FormCreate(Sender: TObject);
@@ -203,6 +207,11 @@ begin
 end;
 
 procedure TAkkordeon.cbxNotenansichtChange(Sender: TObject);
+begin
+  Ampel.Invalidate;
+end;
+
+procedure TAkkordeon.cbxUnterdrueckungChange(Sender: TObject);
 begin
   Ampel.Invalidate;
 end;
