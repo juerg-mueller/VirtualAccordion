@@ -6,5 +6,4 @@ Zur Ausführung eines Lazarus Programms wird die Entwicklungsumgebung benötigt!
 
 Die Diskantbelegung kann mit einem "json"-File definiert werden. Im Verzeichnis "Instrumente" gibt es ein Beispiel. 
 
-![Diskant](https://github.com/user-attachments/assets/6f901603-1042-4aea-be35-227baa5b802d)
-
+![AkkordeonDiskant](https://github.com/user-attachments/assets/318769d9-3e94-45aa-a8f5-d001650c3bd6)
