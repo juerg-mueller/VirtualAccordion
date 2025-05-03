@@ -1,0 +1,23 @@
+object Ampel: TAmpel
+  Left = 508
+  Top = 412
+  HorzScrollBar.Smooth = True
+  VertScrollBar.Smooth = True
+  Caption = 'Diskant'
+  ClientHeight = 153
+  ClientWidth = 1182
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -19
+  Font.Name = 'Sans'
+  Font.Style = []
+  Visible = True
+  OnCreate = FormCreate
+  OnMouseDown = FormMouseDown
+  OnMouseMove = FormMouseMove
+  OnMouseUp = FormMouseUp
+  OnPaint = FormPaint
+  OnResize = FormResize
+  TextHeight = 22
+end
