@@ -83,7 +83,13 @@ type
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+          Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyUp(Sender: TObject; var Key: Word;
+          Shift: TShiftState);
 
     procedure Timer1Timer(Sender: TObject);
   private
@@ -132,6 +138,11 @@ uses
   UMidi, urtmidi,
 {$endif}
   UAkkordeon;
+
+procedure TAmpel.FormShow(Sender: TObject);
+begin
+  //
+end;
 
 procedure TAmpel.FormCreate(Sender: TObject);
 begin
@@ -218,10 +229,22 @@ begin
 end;
 
 
+procedure TAmpel.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  //
+end;
+
 procedure TAmpel.FormKeyPress(Sender: TObject; var Key: Char);
 begin
   if Key <= ' ' then
     Key := #0;
+end;
+
+procedure TAmpel.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    //
 end;
 
 procedure TAmpel.FormMouseUp(Sender: TObject; Button: TMouseButton;  Shift: TShiftState; X, Y: Integer);

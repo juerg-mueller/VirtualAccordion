@@ -1,0 +1,23 @@
+object Ampel: TAmpel
+  Left = 173
+  Height = 192
+  Top = 69
+  Width = 1198
+  HorzScrollBar.Smooth = True
+  VertScrollBar.Smooth = True
+  Caption = 'Diskant'
+  Font.Height = -19
+  Font.Name = 'Sans'
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
+  OnKeyUp = FormKeyUp
+  OnMouseDown = FormMouseDown
+  OnMouseMove = FormMouseMove
+  OnMouseUp = FormMouseUp
+  OnPaint = FormPaint
+  OnResize = FormResize
+  OnShow = FormShow
+  LCLVersion = '2.2.6.0'
+  Visible = True
+end
