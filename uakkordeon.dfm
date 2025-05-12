@@ -3,7 +3,7 @@ object Akkordeon: TAkkordeon
   Top = 472
   HorzScrollBar.Smooth = True
   Caption = 'Akkordeon'
-  ClientHeight = 412
+  ClientHeight = 459
   ClientWidth = 777
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object Akkordeon: TAkkordeon
   object Label1: TLabel
     Left = 32
     Top = 14
-    Width = 74
+    Width = 75
     Height = 15
     Caption = 'Transponieren'
     Color = clBtnFace
@@ -61,6 +61,15 @@ object Akkordeon: TAkkordeon
     Color = clBtnFace
     ParentColor = False
   end
+  object Label6: TLabel
+    Left = 32
+    Top = 198
+    Width = 60
+    Height = 15
+    Caption = 'Darstellung'
+    Color = clBtnFace
+    ParentColor = False
+  end
   object cbxTranspose: TComboBox
     Left = 136
     Top = 9
@@ -97,12 +106,13 @@ object Akkordeon: TAkkordeon
   end
   object gbMidi: TGroupBox
     Left = 0
-    Top = 188
+    Top = 235
     Width = 777
     Height = 224
     Align = alBottom
     Caption = 'MIDI I/O'
     TabOrder = 1
+    ExplicitTop = 188
     DesignSize = (
       777
       224)
@@ -118,7 +128,7 @@ object Akkordeon: TAkkordeon
     object Label17: TLabel
       Left = 24
       Top = 90
-      Width = 51
+      Width = 52
       Height = 15
       Caption = 'MIDI OUT'
       Color = clBtnFace
@@ -227,5 +237,19 @@ object Akkordeon: TAkkordeon
       'Alle Kn'#246'pfe animieren'
       'Untere drei Reihen'
       'Obere drei Reihen')
+  end
+  object cbxDarstellung: TComboBox
+    Left = 120
+    Top = 195
+    Width = 638
+    Height = 23
+    ItemIndex = 0
+    TabOrder = 6
+    Text = 'gemischt'
+    OnChange = cbxUnterdrueckungChange
+    Items.Strings = (
+      'gemischt'
+      '#'
+      'b')
   end
 end

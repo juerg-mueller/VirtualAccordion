@@ -22,11 +22,13 @@ type
 
   TMouseEvent = record
     P: TPoint;
+
+    Status: byte;
     Pitch: byte;
-    Row_, Index_: integer;
-    Key: word;
     Velocity: byte;
 
+    Row_, Index_: integer;
+    Key: word;
     procedure Clear;
   end;
 
@@ -81,6 +83,7 @@ type
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
 
     procedure Timer1Timer(Sender: TObject);
   private
@@ -215,6 +218,12 @@ begin
 end;
 
 
+procedure TAmpel.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key <= ' ' then
+    Key := #0;
+end;
+
 procedure TAmpel.FormMouseUp(Sender: TObject; Button: TMouseButton;  Shift: TShiftState; X, Y: Integer);
 var
   Q: TPoint;
@@ -315,7 +324,11 @@ begin
     t := MidiDiskant[Row, Index];
     if Akkordeon.cbxNotenansicht.ItemIndex in [1, 2] then
     begin
-      s := Tonleiter2[t mod 12];
+      case Akkordeon.cbxDarstellung.ItemIndex of
+        1: s := Tonleiter3[t mod 12];
+        2: s := Tonleiter4[t mod 12];
+        else s := Tonleiter2[t mod 12];
+      end;
       if Akkordeon.cbxNotenansicht.ItemIndex = 1 then
         s := s + IntToStr(t div 12);
     end else begin
@@ -333,7 +346,6 @@ end;
 procedure TAmpel.OnMidiInData(aDeviceIndex: LongInt; aStatus, aData1, aData2: byte; aTimestamp: Int64);
 var
   t: int64;
-  channel, ch, cmd: byte;
   rec: TMidiInData;
 begin
   t := trunc(Now*24000*3600);
@@ -355,6 +367,7 @@ procedure TAmpel.Timer1Timer(Sender: TObject);
 var
   Event: TMouseEvent;
   Data: TMidiInData;
+  channel: byte;
 begin
   while MidiInBuffer.Get(Data) do
   begin
@@ -364,8 +377,13 @@ begin
     if (Data.Status shr 4) in [8, 9] then
     begin
       Event.Clear;
+      Event.Status := Data.Status;
       Event.Pitch := Data.Data1;
-      Event.Row_ := -1;
+      channel := Event.Status and $f;
+      if (channel > 0) and (channel <= 5) then
+        Event.Row_ := 6 - channel
+      else
+        Event.Row_ := -1;
       Event.Index_ := -1;
       Event.Velocity := Data.Data2;
 
@@ -416,6 +434,7 @@ begin
   Row_ := 0;
   Index_ := -1;
   Key := 0;
+  Status := 0;
   Pitch := 0;
   Velocity := 0;
 end;
@@ -435,15 +454,8 @@ begin
 end;
 
 procedure TAmpelEvents.SendMidiOut(const Status, Data1, Data2: byte);
-var
-  s: string;
-  i: integer;
 begin
   SendMidi(Status, Data1, Data2);
-{  s :=  Leiter[Data1 mod 12];
-  for i:= (grundTon div 12)+1 to (Data1 div 12) do
-    s := s + '''';
-  writeln(Status, '  ', Data1, '  ', Data2, '  ', s); }
 end;
 
 function TAmpelEvents.AddMouseEvent(Event: TMouseEvent): boolean;
@@ -474,6 +486,7 @@ var
   i, j, k: integer;
   u, w: integer;
   ok: boolean;
+  channel: byte;
 begin
 //  writeln('new event');
   if UsedEvents >= High(MouseEvents) then
@@ -483,10 +496,17 @@ begin
   begin
     u := 0;
     w := 4;
+    channel := (Event.Status and $f);
     if Akkordeon.cbxUnterdrueckung.ItemIndex = 2 then
       w := 2;
     if Akkordeon.cbxUnterdrueckung.ItemIndex = 1 then
       u := 2;
+    if channel > 0 then
+    begin
+      Channel := 6 - Channel;
+      u := channel-1;
+      w := u;
+    end;
     for i := u to w do
       for k := 0 to 18 do
       begin

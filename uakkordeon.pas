@@ -31,6 +31,8 @@ type
     Label5: TLabel;
     Label3: TLabel;
     cbxUnterdrueckung: TComboBox;
+    Label6: TLabel;
+    cbxDarstellung: TComboBox;
     procedure cbxMidiOutChange(Sender: TObject);
     procedure cbxMidiInputChange(Sender: TObject);
     procedure cbTransInstrumentKeyPress(Sender: TObject; var Key: Char);
@@ -44,6 +46,11 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure cbxInstrumentsChange(Sender: TObject);
     procedure FormClick(Sender: TObject);
     procedure cbxAnzeigenClick(Sender: TObject);
@@ -67,13 +74,18 @@ type
   TZeile = array [0..KnopfCount-1] of string;
   TDiskant = array[0..4] of TZeile;
 
+  TTonleiter = array [0..11] of string;
+  PTonleiter = ^TTonleiter;
+
 const
   black: set of byte = [1, 3, 6, 8, 10];
   grundTon = 36;
 
-  Tonleiter : array [0..11] of string = ('C', 'Dis', 'D', 'Dis', 'E', 'F', 'Fis', 'G', 'Gis', 'A', 'Ais', 'H');
-  Tonleiter_: array [0..11] of string = ('c', 'cis', 'd', 'dis', 'e', 'f', 'fis', 'g', 'gis', 'a', 'ais', 'h');
-  Tonleiter2: array [0..11] of string = ('C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B');
+  Tonleiter : TTonleiter = ('C', 'Dis', 'D', 'Dis', 'E', 'F', 'Fis', 'G', 'Gis', 'A', 'Ais', 'H');
+  Tonleiter_: TTonleiter = ('c', 'cis', 'd', 'dis', 'e', 'f', 'fis', 'g', 'gis', 'a', 'ais', 'h');
+  Tonleiter2: TTonleiter = ('C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B');
+  Tonleiter3: TTonleiter = ('C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B');
+  Tonleiter4: TTonleiter = ('C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B');
 
 var
   Akkordeon: TAkkordeon;
@@ -118,8 +130,8 @@ const
    );
 
   C_Griff_2: TDiskant = (
-    ('F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++', 'A++++'),
-    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', ''),
+    ('F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++', ''),
+    ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', 'A++++'),
     ('E', 'G', 'Ais', 'Cis+', 'E+', 'G+', 'Ais+', 'Cis++', 'E++', 'G++', 'Ais++', 'Cis+++', 'E+++', 'G+++', 'Ais+++', 'Cis++++', 'E++++', 'G++++', ''),
     ('D', 'F', 'Gis', 'H', 'D+', 'F+', 'Gis+', 'H+', 'D++', 'F++', 'Gis++', 'H++', 'D+++', 'F+++', 'Gis+++', 'H+++', 'D++++', 'F++++', 'Gis++++'),
     ('Dis', 'Fis', 'A', 'C+', 'Dis+', 'Fis+', 'A+', 'C++', 'Dis++', 'Fis++', 'A++', 'C+++', 'Dis+++', 'Fis+++', 'A+++', 'C++++', 'Dis++++', 'Fis++++', '')
@@ -161,7 +173,7 @@ const
 
   str: array [0..5] of string = ('C-Griff Europe', 'C-Griff 2', 'B-Griff Bajan', 'B-Griff Finnish', 'D-Griff 1', 'D-Griff 2');
 
-procedure InsertList(Combo: TComboBox; arr: array of string);
+procedure InsertList(Combo: TComboBox; const arr: array of string);
 var
   i: integer;
 begin
@@ -171,7 +183,7 @@ end;
 
 procedure TAkkordeon.FormClick(Sender: TObject);
 begin
-  if not Ampel.Visible then
+  if (Ampel <> nil) and not Ampel.Visible then
     Ampel.Show();
 end;
 
@@ -184,6 +196,23 @@ end;
 procedure TAkkordeon.FormDestroy(Sender: TObject);
 begin
   MidiInput.CloseAll;
+end;
+
+procedure TAkkordeon.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+//  Ampel.FormKeyDown(Sender, Key, Shift);
+end;
+
+procedure TAkkordeon.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+//  Ampel.FormKeyPress(Sender, Key);
+end;
+
+procedure TAkkordeon.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+//  Ampel.FormKeyUp(Sender, Key, Shift);
 end;
 
 procedure TAkkordeon.cbxMidiOutChange(Sender: TObject);
@@ -419,43 +448,39 @@ begin
     MidiInstruments[length(MidiInstruments)-1] := MidiDiskant;
     cbxInstruments.Items.Add(str[j]);
   end;
-{
+{$if false}
   Stream := TMyMemoryStream.Create;
-  Stream.WriteString('const');
-  Stream.writeln;
   for j := 0 to Length(MidiInstruments)-1 do
   begin
-    Stream.WriteString('  ' + cbxInstruments.Items[j] + ': TDiskant = (');
+    Stream.WriteString('const TInstrument Akkordeon =  Akkordeon' + IntToStr(j));
     Stream.writeln;
+    stream.WriteString('    {');
+    stream.writeln;
+    stream.WriteString('     "' + str[j] + '",');
+    stream.writeln;
+    stream.WriteString('    {');
+    stream.writeln;
     for i := 0 to 4 do
     begin
-      stream.WriteString('    (');
+      stream.WriteString('     {');
       for k := 0 to KnopfCount-1 do begin
         t := MidiInstruments[j, i, k];
-        s := '';
-        if t > 0 then begin
-          s := Tonleiter[t mod 12];
-          p := (t-grundTon) div 12;
-          for l := 1 to p do
-            s := s + '+';
-        end;
-        stream.WriteString('''' + s + '''');
+        stream.WriteString(IntToStr(t));
         if k < KnopfCount-1 then
           stream.WriteString(', ');
       end;
-      stream.WriteString(')');
+      stream.WriteString('}');
       if i < 4 then
         stream.WriteString(',');
       stream.writeln;
     end;
-    stream.WriteString('   );');
+    stream.WriteString('   }};');
     stream.writeln;
     stream.writeln;
   end;
   stream.SaveToFile('Diskant.pas');
   stream.free;
-  }
-
+{$endif}
 
   SetLength(DirList, 0);
   if FindFirst(Path + '*.json', faNormal, SR) = 0 then
