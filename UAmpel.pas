@@ -399,6 +399,11 @@ begin
     else
     if (Data.Status shr 4) in [8, 9] then
     begin
+      if ((Data.Status shr 4) = 9) and (Data.Data2 = 0) then
+      begin
+        dec(Data.Status, $10);
+        Data.Data2 := 64;
+      end;
       Event.Clear;
       Event.Status := Data.Status;
       Event.Pitch := Data.Data1;

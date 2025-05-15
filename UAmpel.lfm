@@ -9,12 +9,12 @@ object Ampel: TAmpel
   Font.Height = -19
   Font.Name = 'Sans'
   OnCreate = FormCreate
-  OnMouseDown = FormMouseDown
-  OnMouseMove = FormMouseMove
-  OnMouseUp = FormMouseUp
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
   OnKeyUp = FormKeyUp
+  OnMouseDown = FormMouseDown
+  OnMouseMove = FormMouseMove
+  OnMouseUp = FormMouseUp
   OnPaint = FormPaint
   OnResize = FormResize
   OnShow = FormShow

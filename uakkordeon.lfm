@@ -1,7 +1,7 @@
 object Akkordeon: TAkkordeon
-  Left = 1237
+  Left = 618
   Height = 442
-  Top = 472
+  Top = 506
   Width = 777
   HorzScrollBar.Smooth = True
   Caption = 'Akkordeon'
@@ -10,6 +10,9 @@ object Akkordeon: TAkkordeon
   OnClick = FormClick
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
+  OnKeyUp = FormKeyUp
   OnShow = FormShow
   LCLVersion = '2.2.6.0'
   object cbxTranspose: TComboBox
@@ -203,7 +206,7 @@ object Akkordeon: TAkkordeon
     TabOrder = 4
     Text = 'mit Nummer'
   end
-  object cbxUnterdueckung: TComboBox
+  object cbxUnterdrueckung: TComboBox
     Left = 122
     Height = 31
     Top = 160
@@ -215,7 +218,7 @@ object Akkordeon: TAkkordeon
       'Untere drei Reihen'
       'Obere drei Reihen'
     )
-    OnChange = cbxUnterdueckungChange
+    OnChange = cbxUnterdrueckungChange
     TabOrder = 5
     Text = 'Alle Knöpfe animieren'
   end
@@ -226,5 +229,19 @@ object Akkordeon: TAkkordeon
     Width = 68
     Caption = 'Sichbarkeit'
     ParentColor = False
+  end
+  object cbxDarstellung: TComboBox
+    Left = 120
+    Top = 195
+    Width = 638
+    Height = 23
+    ItemIndex = 0
+    TabOrder = 6
+    Text = 'gemischt'
+    OnChange = cbxUnterdrueckungChange
+    Items.Strings = (
+      'gemischt'
+      '#'
+      'b')
   end
 end
