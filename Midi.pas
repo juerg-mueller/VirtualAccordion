@@ -291,7 +291,7 @@ begin
          (midiInOpen(@lHandle, i, 0, 0, CALLBACK_NULL) = 0) then
       begin
     {$if defined(CONSOLE)}
-        writeln('midi input ', fDeviceNames.Count, ': ', lInCaps.szPname);
+//        writeln('midi input ', fDeviceNames.Count, ': ', lInCaps.szPname);
     {$endif}
         l := length(DeviceNames);
         SetLength(DeviceNames, l+1);
@@ -422,7 +422,7 @@ begin
 {$if defined(CONSOLE)}
           writeln('Index for ', MicrosoftSync, ' ', MicrosoftIndex);
         end else
-          writeln('midi output ', fDeviceNames.Count, ': ', s);
+//          writeln('midi output ', fDeviceNames.Count, ': ', s);
 {$else}
         end;
 {$endif}
@@ -609,11 +609,12 @@ begin
   begin
     MidiOutput.Open(MicrosoftIndex);
     try
-      for i := 0 to 9 do
-        if (i > 4) and BassBankActiv then
-          ChangeBank(MicrosoftIndex, i, MidiBankBass, MidiInstrBass)
-        else
-          ChangeBank(MicrosoftIndex, i, MidiBankDiskant, MidiInstrDiskant);
+      ChangeBank(MicrosoftIndex, 0, MidiBankDiskant, MidiInstrDiskant);
+      ChangeBank(MicrosoftIndex, 1, MidiBankDiskant, MidiInstrDiskant);
+      ChangeBank(MicrosoftIndex, 2, MidiBankDiskant, MidiInstrDiskant);
+      ChangeBank(MicrosoftIndex, 3, MidiBankDiskant, MidiInstrDiskant);
+      ChangeBank(MicrosoftIndex, 4, MidiBankDiskant, MidiInstrDiskant);
+      ChangeBank(MicrosoftIndex, 5, MidiBankDiskant, MidiInstrDiskant);
     finally
     end;
   {$if defined(CONSOLE)}

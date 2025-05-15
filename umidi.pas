@@ -18,10 +18,7 @@ type
 var
   TrueMicrosoftIndex: integer = -1;
   MidiInstrDiskant: byte = $15; // Akkordeon
-  MidiInstrBass: byte = $15; // Akkordeon
-  BassBankActiv: boolean = false;
   MidiBankDiskant: byte = 0;
-  MidiBankBass: byte = 0;
   Scene: integer = 0;
   pipFirst: byte =  37;   // 59
   pipSecond: byte = 69;       // 76
@@ -68,8 +65,7 @@ begin
       ChangeBank(MicrosoftIndex, 2, MidiBankDiskant, MidiInstrDiskant);
       ChangeBank(MicrosoftIndex, 3, MidiBankDiskant, MidiInstrDiskant);
       ChangeBank(MicrosoftIndex, 4, MidiBankDiskant, MidiInstrDiskant);
-      ChangeBank(MicrosoftIndex, 5, MidiBankBass, MidiInstrBass);
-      ChangeBank(MicrosoftIndex, 6, MidiBankBass, MidiInstrBass);
+      ChangeBank(MicrosoftIndex, 5, MidiBankDiskant, MidiInstrDiskant);
     finally
     end;
   end;

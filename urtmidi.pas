@@ -60,13 +60,15 @@ implementation
 
 constructor TMidiOutput.Create(Name: PChar);
 begin
-  MidiOut := rtmidi_out_create(RTMIDI_API_LINUX_ALSA, Name);
+  if @rtmidi_out_create <> nil then
+    MidiOut := rtmidi_out_create(RTMIDI_API_LINUX_ALSA, Name);
 end;
 
 destructor TMidiOutput.Destroy;
 begin
   CloseAll;
-  rtmidi_out_free(MidiOut);
+  if MidiOut <> nil then
+    rtmidi_out_free(MidiOut);
 
   inherited;
 end;
@@ -78,12 +80,14 @@ end;
 
 procedure TMidiOutput.Open(Index: integer);
 begin
-  rtmidi_open_port(MidiOut, Index, '');
+  if @rtmidi_open_port <> nil then
+    rtmidi_open_port(MidiOut, Index, '');
 end;
 
 procedure TMidiOutput.Close(Index: integer);
 begin
-  rtmidi_close_port(MidiOut);
+  if @rtmidi_close_port <> nil then
+    rtmidi_close_port(MidiOut);
 end;
 
 procedure TMidiOutput.GenerateList;
@@ -92,15 +96,17 @@ var
   c: array [0..255] of AnsiChar;
   len: integer;
 begin
-  Count := rtmidi_get_port_count(MidiOut);
-  SetLength(DeviceNames, Count);
-  for i := 0 to count-1 do
+  if @rtmidi_get_port_count <> nil then
   begin
-    len := 254;
-    rtmidi_get_port_name(MidiOut, i, c, len);
-    DeviceNames[i] := c;
+    Count := rtmidi_get_port_count(MidiOut);
+    SetLength(DeviceNames, Count);
+    for i := 0 to count-1 do
+    begin
+      len := 254;
+      rtmidi_get_port_name(MidiOut, i, c, len);
+      DeviceNames[i] := c;
+    end;
   end;
-
 end;
 
 procedure TMidiOutput.Send(Index: integer; command, d1, d2: byte);
@@ -117,6 +123,7 @@ begin
     dec(l);
   if MidiOut <> nil then
     rtmidi_out_send_message(MidiOut, @b, l);
+  writeln(IntToHex(command), '  ', d1, '  ', d2);
 end;
 
 procedure TMidiOutput.Reset;
@@ -136,13 +143,16 @@ end;
 
 constructor TMidiInput.Create(Name: PChar);
 begin
-  MidiIn := rtmidi_in_create(RTMIDI_API_LINUX_ALSA, Name, 10240);
+  MidiIn := nil;
+  if @rtmidi_in_create <> nil then
+    MidiIn := rtmidi_in_create(RTMIDI_API_LINUX_ALSA, Name, 10240);
 end;
 
 destructor TMidiInput.Destroy;
 begin
   CloseAll;
-  rtmidi_in_free(MidiIn);
+  if MidiIn <> nil then
+    rtmidi_in_free(MidiIn);
 end;
 
 procedure Callback(TimeStamp: double; const message: PChar; userData: pointer); cdecl;
@@ -153,14 +163,20 @@ end;
 
 procedure TMidiInput.Open(Index: integer);
 begin
-  rtmidi_open_port(MidiIn, Index, '');
-  rtmidi_in_set_callback(MidiIn, @Callback, self);
+  if @rtmidi_open_port <> nil then
+  begin
+    rtmidi_open_port(MidiIn, Index, '');
+    rtmidi_in_set_callback(MidiIn, @Callback, self);
+  end;
 end;
 
 procedure TMidiInput.Close(Index: integer);
 begin
-  rtmidi_in_cancel_callback(MidiIn);
-  rtmidi_close_port(MidiIn);
+  if MidiIn <> nil then
+  begin
+    rtmidi_in_cancel_callback(MidiIn);
+    rtmidi_close_port(MidiIn);
+  end;
 end;
 
 procedure TMidiInput.CloseAll;
@@ -174,13 +190,18 @@ var
   c: array [0..255] of char;
   len:integer;
 begin
-  Count := rtmidi_get_port_count(MidiIn);
+  Count := 0;
   SetLength(DeviceNames, Count);
-  for i := 0 to count-1 do
+  if (@rtmidi_get_port_count <> nil) then
   begin
-    len := 255;
-    rtmidi_get_port_name(MidiIn, i, c, len);
-    DeviceNames[i] := c;
+    Count := rtmidi_get_port_count(MidiIn);
+    SetLength(DeviceNames, Count);
+    for i := 0 to count-1 do
+    begin
+      len := 255;
+      rtmidi_get_port_name(MidiIn, i, c, len);
+      DeviceNames[i] := c;
+    end;
   end;
 end;
 

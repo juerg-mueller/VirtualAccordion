@@ -284,7 +284,7 @@ initialization
     rtmidi_out_send_message :=  Trtmidi_out_send_message(GetProcedureAddress(hndLib, 'rtmidi_out_send_message'));
   end else begin
     ErrMessage('rtmidi library "' + libName + '" not found');
-    halt;
+ //   halt;
   end;
 
 finalization
