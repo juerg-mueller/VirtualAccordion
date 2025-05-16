@@ -533,6 +533,8 @@ begin
     begin
       Channel := 6 - Channel;
       u := channel-1;
+      if u < 0 then
+        u := 0;
       w := u;
     end;
     for i := u to w do
