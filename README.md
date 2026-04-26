@@ -2,7 +2,7 @@
 
 Virtuelles MIDI-Akkordeon. Es verwendet Lazarus als Programmiersprache. Es ist auf MACOS, Linux und Windows lauffähig. Auf MACOS und Linux ist die dynamische Bibliothek "RtMidi" notwendig.
 
-Zur Ausführung eines Lazarus Programms wird die Entwicklungsumgebung benötigt! Deshalb wurde des Programm unter Windows mit Delphi generiert. 
+Alle neueren Programme sind mit Lazarus generiert worden.
 
 Die Diskantbelegung kann mit einem "json"-File definiert werden. Im Verzeichnis "Instrumente" gibt es ein Beispiel. 
 
