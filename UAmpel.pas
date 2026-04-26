@@ -553,14 +553,19 @@ begin
 end;
 
 procedure TAmpelEvents.DoAmpel(Index: integer; On_: boolean);
+var
+  ch: byte;
 begin
   with MouseEvents[Index] do
   begin
+    ch := 5 - Row_;
+    if Akkordeon.cbxCannel1.Checked then
+      ch := 0;
     frmAmpel.PaintAmpel(Row_, Index_, On_);
     if On_ then
-      SendMidiOut($90, Pitch, 120)
+      SendMidiOut($90 + ch, Pitch, 120)
     else
-      SendMidiOut($80, Pitch, 64)
+      SendMidiOut($80 + ch, Pitch, 64)
   end
 end;
 

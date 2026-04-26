@@ -2,27 +2,14 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="12"/>
-    <BuildModes Active="Default"/>
+    <BuildModes Active="win64"/>
     <Units>
       <Unit>
         <Filename Value="VirtuellesAkkordeon.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="3" Y="13"/>
-        <UsageCount Value="161"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uampel.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="Ampel"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="UAmpel"/>
-        <TopLine Value="195"/>
-        <CursorPos X="89" Y="211"/>
-        <UsageCount Value="161"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <CursorPos X="5" Y="5"/>
+        <UsageCount Value="208"/>
       </Unit>
       <Unit>
         <Filename Value="uakkordeon.pas"/>
@@ -31,11 +18,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UAkkordeon"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="462"/>
-        <CursorPos X="35" Y="493"/>
-        <UsageCount Value="161"/>
+        <TopLine Value="516"/>
+        <CursorPos X="12" Y="93"/>
+        <UsageCount Value="208"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -44,27 +29,29 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="RtMidi"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="15"/>
-        <CursorPos X="21" Y="15"/>
-        <UsageCount Value="161"/>
+        <TopLine Value="231"/>
+        <CursorPos X="19" Y="213"/>
+        <UsageCount Value="208"/>
       </Unit>
       <Unit>
         <Filename Value="umidi.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="UMidi"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="19"/>
-        <CursorPos Y="42"/>
-        <UsageCount Value="161"/>
+        <EditorIndex Value="3"/>
+        <CursorPos Y="67"/>
+        <UsageCount Value="208"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="urtmidi.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Urtmidi"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="40"/>
-        <CursorPos Y="59"/>
-        <UsageCount Value="161"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="102"/>
+        <CursorPos X="10" Y="120"/>
+        <UsageCount Value="208"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="UFormHelper.pas"/>
@@ -72,7 +59,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="36"/>
         <CursorPos X="85" Y="36"/>
-        <UsageCount Value="161"/>
+        <UsageCount Value="208"/>
       </Unit>
       <Unit>
         <Filename Value="Ujson.pas"/>
@@ -80,14 +67,44 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="88"/>
         <CursorPos X="102" Y="127"/>
-        <UsageCount Value="103"/>
+        <UsageCount Value="168"/>
       </Unit>
       <Unit>
         <Filename Value="UMyMemoryStream.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="21" Y="17"/>
-        <UsageCount Value="102"/>
+        <TopLine Value="34"/>
+        <CursorPos X="28" Y="61"/>
+        <UsageCount Value="167"/>
+      </Unit>
+      <Unit>
+        <Filename Value="UAmpel.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Ampel"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="542"/>
+        <CursorPos Y="554"/>
+        <UsageCount Value="167"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unit1.pas"/>
+        <UnitName Value="Unit1"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="36" Y="87"/>
+        <UsageCount Value="33"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Midi.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="550"/>
+        <CursorPos Y="570"/>
+        <UsageCount Value="42"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../Virtuelle-Steirische-Harmonika-main/UAmpel.pas"/>
@@ -95,23 +112,15 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1339"/>
-        <CursorPos Y="1266"/>
-        <UsageCount Value="9"/>
-      </Unit>
-      <Unit>
-        <Filename Value="uampel.lfm"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="24" Y="17"/>
-        <UsageCount Value="3"/>
-        <DefaultSyntaxHighlighter Value="LFM"/>
+        <TopLine Value="861"/>
+        <CursorPos X="25" Y="898"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="uakkordeon.lfm"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="172"/>
-        <CursorPos X="32" Y="192"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="22" Y="16"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
@@ -121,7 +130,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="2"/>
       </Unit>
       <Unit>
         <Filename Value="../Virtuelle-Steirische-Harmonika-main/umidi.pas"/>
@@ -130,7 +139,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="2"/>
       </Unit>
       <Unit>
         <Filename Value="../Virtuelle-Steirische-Harmonika-main/urtmidi.pas"/>
@@ -139,14 +148,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="7"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Midi.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="582"/>
-        <CursorPos X="19" Y="597"/>
-        <UsageCount Value="36"/>
+        <UsageCount Value="2"/>
       </Unit>
       <Unit>
         <Filename Value="../Virtuelle-Steirische-Harmonika-main/UVirtualHarmonica.pas"/>
@@ -156,177 +158,181 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="598"/>
         <CursorPos X="91" Y="612"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/lib/lazarus/2.2.6/lcl/include/customform.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1089"/>
-        <CursorPos Y="1111"/>
-        <UsageCount Value="9"/>
+        <TopLine Value="902"/>
+        <CursorPos Y="922"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/lib/lazarus/2.2.6/lcl/include/customcontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="40"/>
         <CursorPos Y="60"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/lib/lazarus/2.2.6/lcl/include/canvas.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1606"/>
         <CursorPos Y="1627"/>
-        <UsageCount Value="9"/>
-      </Unit>
-      <Unit>
-        <Filename Value="../Virtuelle-Steirische-Harmonika-main/instruments/Schwyzerörgeli_B.json"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="26"/>
-        <UsageCount Value="2"/>
-        <DefaultSyntaxHighlighter Value="None"/>
-      </Unit>
-      <Unit>
-        <Filename Value="Instrument/Akkordeon_B.json"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="35" Y="7"/>
-        <UsageCount Value="3"/>
-        <DefaultSyntaxHighlighter Value="None"/>
-      </Unit>
-      <Unit>
-        <Filename Value="../Virtuelle-Steirische-Harmonika-main/UInstrument.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="912"/>
-        <CursorPos X="79" Y="890"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="Diskant.pas"/>
         <EditorIndex Value="-1"/>
-        <CursorPos Y="9"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="28"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/usr/lib/lazarus/2.2.6/lcl/include/control.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3574"/>
+        <CursorPos X="54" Y="3587"/>
+        <UsageCount Value="28"/>
+      </Unit>
+      <Unit>
+        <Filename Value="UAmpel.lfm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="22" Y="17"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Instrumente/Akkordeon_B.json"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="5"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../Virtuelle-Steirische-Harmonika-main/UAmpel.lfm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="24"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="uakkordeon.pas"/>
-        <Caret Line="68" Column="22" TopLine="55"/>
+        <Caret Column="16"/>
       </Position>
       <Position>
         <Filename Value="uakkordeon.pas"/>
-        <Caret Line="434" TopLine="409"/>
+        <Caret Line="14" Column="15"/>
       </Position>
       <Position>
         <Filename Value="uakkordeon.pas"/>
-        <Caret Line="352" TopLine="333"/>
+        <Caret Line="16" Column="13"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="356" Column="88" TopLine="333"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="140" Column="13" TopLine="125"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="354" TopLine="333"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="162" Column="15" TopLine="137"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="355" TopLine="333"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="184" Column="15" TopLine="159"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="356" TopLine="333"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="191" Column="15" TopLine="166"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="357" TopLine="333"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="200" Column="15" TopLine="175"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="436" Column="46" TopLine="414"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="341" Column="15" TopLine="316"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="439" Column="2" TopLine="374"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="348" Column="17" TopLine="324"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="67" TopLine="42"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="561" Column="15" TopLine="541"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="135" Column="155" TopLine="102"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="397" Column="45" TopLine="381"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="500" TopLine="432"/>
+        <Filename Value="umidi.pas"/>
+        <Caret Line="22" Column="7"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="157" Column="108" TopLine="145"/>
+        <Filename Value="umidi.pas"/>
+        <Caret Line="67" Column="69" TopLine="42"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="134" Column="154" TopLine="115"/>
+        <Filename Value="umidi.pas"/>
+        <Caret Line="66" Column="20" TopLine="48"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="150" Column="18" TopLine="145"/>
+        <Filename Value="urtmidi.pas"/>
+        <Caret Line="31" Column="19" TopLine="9"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="261" Column="50" TopLine="248"/>
+        <Filename Value="UAmpel.pas"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="298" Column="13" TopLine="266"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="30" Column="9" TopLine="3"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="300" Column="13" TopLine="268"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="289" Column="13" TopLine="262"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="303" Column="11" TopLine="271"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="302" Column="19" TopLine="275"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="305" Column="11" TopLine="273"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="306" Column="18" TopLine="279"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="307" Column="29" TopLine="275"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="412" Column="19" TopLine="395"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="308" Column="9" TopLine="276"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="414" Column="19" TopLine="395"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="311" Column="14" TopLine="279"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="462" Column="7" TopLine="447"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="312" Column="13" TopLine="280"/>
+        <Filename Value="UAmpel.pas"/>
+        <Caret Line="497" Column="43" TopLine="479"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="314" Column="13" TopLine="282"/>
+        <Filename Value="urtmidi.pas"/>
+        <Caret Line="126" Column="16" TopLine="106"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="327" Column="16" TopLine="296"/>
+        <Filename Value="urtmidi.pas"/>
+        <Caret Line="212" Column="3" TopLine="189"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="328" Column="33" TopLine="297"/>
+        <Filename Value="urtmidi.pas"/>
+        <Caret Line="54" Column="5" TopLine="42"/>
       </Position>
       <Position>
-        <Filename Value="uampel.pas"/>
-        <Caret Line="329" Column="11" TopLine="298"/>
+        <Filename Value="urtmidi.pas"/>
+        <Caret Line="217" TopLine="187"/>
       </Position>
       <Position>
-        <Filename Value="uakkordeon.pas"/>
-        <Caret Line="381" Column="84" TopLine="381"/>
+        <Filename Value="urtmidi.pas"/>
+        <Caret Line="54" TopLine="58"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -340,8 +346,15 @@
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="../Virtuelle-Steirische-Harmonika-main/UAmpel.pas"/>
-        <Line Value="394"/>
+        <Source Value="UAmpel.pas"/>
+        <Line Value="418"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="UAmpel.pas"/>
+        <Line Value="397"/>
       </Item>
     </BreakPoints>
     <Watches>

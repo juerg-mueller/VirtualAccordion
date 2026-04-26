@@ -51,7 +51,6 @@ type
 
 var
   MidiOutput: TMidiOutput;
-  MidiVirtual: TMidiOutput;
   MidiInput: TMidiInput;
 
   MicrosoftIndex: integer = -1;
@@ -123,7 +122,9 @@ begin
     dec(l);
   if MidiOut <> nil then
     rtmidi_out_send_message(MidiOut, @b, l);
-  writeln(IntToHex(command), '  ', d1, '  ', d2);
+{$if defined(CONSOLE)}
+  writeln('$', IntToHex(command), '  ', d1, '  ', d2);
+{$endif}
 end;
 
 procedure TMidiOutput.Reset;
@@ -208,16 +209,12 @@ end;
 
 initialization
 
-
-    MidiOutput := TMidiOutput.Create;
-    MidiVirtual := TMidiOutput.Create;
-    MidiInput := TMidiInput.Create;
-
+  MidiOutput := TMidiOutput.Create;
+  MidiInput := TMidiInput.Create;
 
 finalization
 
   MidiInput.Free;
-  MidiVirtual.Free;
   MidiOutput.Free;
 end.
 

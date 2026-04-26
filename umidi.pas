@@ -19,17 +19,6 @@ var
   TrueMicrosoftIndex: integer = -1;
   MidiInstrDiskant: byte = $15; // Akkordeon
   MidiBankDiskant: byte = 0;
-  Scene: integer = 0;
-  pipFirst: byte =  37;   // 59
-  pipSecond: byte = 69;       // 76
-  pipChannel: byte = 9;
-
-  VolumeDiscant: double = 1.0;
-  VolumeBass: double = 1.0;
-  VolumeMetronom: double = 0.8;
-  NurTakt: boolean = false;
-  OhneBlinker: boolean = true;
-
 
 procedure ChangeBank(Index, Channel, Bank, Instr: byte);
 procedure VolumeChange(vol: double; channels: TChannels);

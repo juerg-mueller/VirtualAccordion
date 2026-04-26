@@ -422,7 +422,7 @@ begin
 {$if defined(CONSOLE)}
           writeln('Index for ', MicrosoftSync, ' ', MicrosoftIndex);
         end else
-//          writeln('midi output ', fDeviceNames.Count, ': ', s);
+          writeln('midi output ', Length(DeviceNames), ': ', s);
 {$else}
         end;
 {$endif}
@@ -541,57 +541,6 @@ begin
   MidiOutput.Send(Index, $b0 + Channel, 0, Bank);  // 0x32, LSB Bank);
   MidiOutput.Send(Index, $c0 + Channel, Instr, 0);
 end;
-
-// Drum Kit: Channel 10
-// Program pp:  C9 pp
-
-// Trompete  Klarinette  Gitarre   Akkordeon
-// 12            16        07         41
-// 00            00        04         61
-// 0             -5         0          0
-type
-  Accord = record
-    Channel: byte;
-    Bank: byte;
-    Instr: byte;
-    Delta: integer;
-    Velo: integer;      // in %
-  end;
-
-  AccordArr = array [0..4] of Accord;
-
-const
-
-  tx : AccordArr =
-    (
-      (Channel: 1; Bank: 12; Instr: 0; Delta: 3; Velo: -5),
-      (Channel: 2; Bank: 17; Instr: 0; Delta: -5; Velo: -5),
-      (Channel: 3; Bank: 7; Instr: 4; Delta: 0; Velo: -5),
-      (Channel: 4; Bank: 41; Instr: 61; Delta: 0),
-      ()
-    );
-
-    tx0 : AccordArr =
-    (
-      (Channel: 1; Bank: 0; Instr: 56; Delta: 3; Velo: -5),
-      (Channel: 2; Bank: 0; Instr: 71; Delta: -5; Velo: -5),
-      (Channel: 3; Bank: 0; Instr: 24; Delta: 0; Velo: -5),
-      (Channel: 4; Bank: 0; Instr: 21; Delta: 0),
-      ()
-    );
-
-  ty : AccordArr =
-    (
-      (Channel: 5; Bank: 15; Instr: 27; Delta: 0),  // Bariton
-      (Channel: 6; Bank: 19; Instr: 7; Delta: 0),  // E-Bass
-      (Channel: 7; Bank: 7; Instr: 4; Delta: 0),   // Akkordenbass
-      (Channel: 8; Bank: 41; Instr: 61; Delta: 0),  // Gitarre
-      ()
-    );
-
-var
-  AccDiskant: AccordArr;
-  AccBass: AccordArr;
 
 procedure SendMidi(Status, Data1, Data2: byte);
 begin

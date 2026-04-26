@@ -10,12 +10,12 @@ uses
   athreads,
   {$ENDIF}
   {$ifdef mswindows}
-   midi,
+   Midi,
   {$else}
    RtMidi, UMidi, Urtmidi,
   {$endif}
   Interfaces, // this includes the LCL widgetset
-  Forms, UAmpel, UAkkordeon, UFormHelper, Ujson, UMyMemoryStream;
+  Forms, UAkkordeon, UFormHelper, Ujson, UMyMemoryStream, UAmpel;
 
 {$R *.res}
 

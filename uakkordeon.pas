@@ -18,6 +18,7 @@ type
     cbxTranspose: TComboBox;
     cbxInstruments: TComboBox;
     cbxAnsicht: TComboBox;
+    cbxCannel1: TCheckBox;
     Label1: TLabel;
     gbMidi: TGroupBox;
     Label4: TLabel;
@@ -33,6 +34,7 @@ type
     cbxUnterdrueckung: TComboBox;
     Label6: TLabel;
     cbxDarstellung: TComboBox;
+    lblKeyboard1: TLabel;
     procedure cbxMidiOutChange(Sender: TObject);
     procedure cbxMidiInputChange(Sender: TObject);
     procedure cbTransInstrumentKeyPress(Sender: TObject; var Key: Char);
@@ -191,6 +193,19 @@ procedure TAkkordeon.FormCreate(Sender: TObject);
 begin
   InitInstruments;
   cbxInstruments.OnChange := cbxInstrumentsChange;
+{$if defined(CPU64) or defined(WIN64)}
+  {$ifdef fpc}
+    Caption := Caption + ' (Lazarus 64)';
+  {$else}
+    Caption := Caption + ' (64)';
+  {$endif}
+{$else}
+  {$ifdef fpc}
+    Caption := Caption + ' (Lazarus 32)';
+  {$else}
+    Caption := Caption + ' (32)';
+  {$endif}
+{$endif}
 end;
 
 procedure TAkkordeon.FormDestroy(Sender: TObject);
